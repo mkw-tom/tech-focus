@@ -7,6 +7,9 @@ on:
       - main
       - develop
 
+permissions:
+  contents: read
+
 jobs:
   lint-and-format:
     runs-on: ubuntu-latest
@@ -14,6 +17,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955
+        with:
+          fetch-depth: 1
+          persist-credentials: false
 
       - name: Setup pnpm
         uses: pnpm/action-setup@9fd676a19091d4595eefd76e4bd31c97133911f1

@@ -19,6 +19,10 @@
     },
     "format": {
       "cache": false
+    },
+    "format:check": {
+      "dependsOn": ["^format:check"],
+      "outputs": []
     }
   }
 }

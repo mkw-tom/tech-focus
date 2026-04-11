@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type SearchHeaderProps = {
-  initialQuery?: string
-  tabs?: string[]
-}
+  initialQuery?: string;
+  tabs?: string[];
+};
 
 type SearchFormProps = {
-  onChange: (value: string) => void
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
-  query: string
-  showShortcut?: boolean
-}
+  onChange: (value: string) => void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  query: string;
+  showShortcut?: boolean;
+};
 
 function SearchForm({
   onChange,
@@ -47,31 +47,31 @@ function SearchForm({
         {showShortcut ? <kbd className="kbd kbd-sm">Enter</kbd> : null}
       </label>
     </form>
-  )
+  );
 }
 
 export function SearchHeader({
   initialQuery = "",
   tabs: _tabs,
 }: SearchHeaderProps) {
-  const router = useRouter()
-  const [query, setQuery] = useState(initialQuery)
-  const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const router = useRouter();
+  const [query, setQuery] = useState(initialQuery);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    const normalizedQuery = query.trim()
+    const normalizedQuery = query.trim();
 
     if (!normalizedQuery) {
-      setIsMobileOpen(false)
-      router.push("/")
-      return
+      setIsMobileOpen(false);
+      router.push("/");
+      return;
     }
 
-    setIsMobileOpen(false)
-    router.push(`/search?q=${encodeURIComponent(normalizedQuery)}`)
-  }
+    setIsMobileOpen(false);
+    router.push(`/search?q=${encodeURIComponent(normalizedQuery)}`);
+  };
 
   return (
     <>
@@ -87,10 +87,12 @@ export function SearchHeader({
         </div>
       </header>
 
-      <div className="fixed inset-x-4 top-20 z-40 flex justify-end lg:hidden">
+      <div className="pointer-events-none fixed inset-x-4 top-24 z-[60] flex justify-end lg:hidden">
         <div
-          className={`flex items-center gap-3 overflow-hidden rounded-3xl mt-2 bg-base-100/95 shadow-xl backdrop-blur transition-all duration-300 ease-out ${
-            isMobileOpen ? "w-full max-w-sm px-2 py-2" : "w-14 px-1.5 py-1.5"
+          className={`pointer-events-auto mt-2 flex items-center gap-3 overflow-hidden rounded-3xl border border-base-300 bg-base-100/95 shadow-xl backdrop-blur transition-all duration-300 ease-out ${
+            isMobileOpen
+              ? "w-[min(22rem,calc(100vw-2rem))] px-2 py-2"
+              : "w-14 px-1.5 py-1.5"
           }`}
         >
           {isMobileOpen ? (
@@ -128,5 +130,5 @@ export function SearchHeader({
         </div>
       </div>
     </>
-  )
+  );
 }

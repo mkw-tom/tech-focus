@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 type SearchHeaderProps = {
-  initialQuery?: string;
-  tabs?: string[];
-};
+  initialQuery?: string
+  tabs?: string[]
+}
 
 type SearchFormProps = {
-  onChange: (value: string) => void;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  query: string;
-  showShortcut?: boolean;
-};
+  onChange: (value: string) => void
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+  query: string
+  showShortcut?: boolean
+}
 
 function SearchForm({
   onChange,
@@ -47,31 +47,31 @@ function SearchForm({
         {showShortcut ? <kbd className="kbd kbd-sm">Enter</kbd> : null}
       </label>
     </form>
-  );
+  )
 }
 
 export function SearchHeader({
   initialQuery = "",
   tabs: _tabs,
 }: SearchHeaderProps) {
-  const router = useRouter();
-  const [query, setQuery] = useState(initialQuery);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const router = useRouter()
+  const [query, setQuery] = useState(initialQuery)
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const normalizedQuery = query.trim();
+    const normalizedQuery = query.trim()
 
     if (!normalizedQuery) {
-      setIsMobileOpen(false);
-      router.push("/");
-      return;
+      setIsMobileOpen(false)
+      router.push("/")
+      return
     }
 
-    setIsMobileOpen(false);
-    router.push(`/search?q=${encodeURIComponent(normalizedQuery)}`);
-  };
+    setIsMobileOpen(false)
+    router.push(`/search?q=${encodeURIComponent(normalizedQuery)}`)
+  }
 
   return (
     <>
@@ -130,5 +130,5 @@ export function SearchHeader({
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -15,9 +15,9 @@ export default function HomePage() {
   return (
     <AppShell currentPath="/">
       <SearchHeader />
-      <HeroPanel metrics={marketPulse} />
+      {/* <HeroPanel metrics={marketPulse} /> */}
 
-      <div className="">
+      <div className="pt-6 lg:pt-0">
         <HomeFeed
           stories={topStories}
           typeFilters={topicFilters}

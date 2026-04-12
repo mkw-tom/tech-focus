@@ -1,7 +1,7 @@
 import { serve } from "@hono/node-server"
 import { createApp } from "./app.js"
 
-const port = 8787
+const port = Number(process.env.PORT ?? 8787)
 const app = createApp()
 
 serve(

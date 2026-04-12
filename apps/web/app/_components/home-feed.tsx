@@ -74,10 +74,10 @@ export function HomeFeed({
             <button
               key={topic.id}
               type="button"
-              className={`btn rounded-full btn-sm px-3 ${
+              className={`rounded-full btn btn-sm px-3 ${
                 selectedTopicIds.includes(topic.id)
-                  ? "btn-primary bg-primary text-white"
-                  : "btn-ghost border border-base-300"
+                  ? "btn-primary"
+                  : "btn-ghost  "
               }`}
               onClick={() => toggleTopic(topic.id)}
             >

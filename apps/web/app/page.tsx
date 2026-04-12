@@ -3,25 +3,29 @@ import { HeroPanel } from "./_components/hero-panel"
 import { HomeFeed } from "./_components/home-feed"
 import { InfoCard } from "./_components/info-card"
 import { SearchHeader } from "./_components/search-header"
-import {
-  defaultHomeTopicIds,
-  marketPulse,
-  topStories,
-  topicFilters,
-  trackableTechnologies,
-} from "./_data/dashboard"
+import { getDashboardData } from "./_lib/dashboard-api"
 
-export default function HomePage() {
+export default async function HomePage() {
+  const dashboard = await getDashboardData()
+  const defaultHomeTopicIds = dashboard.trackableTechnologies
+    .filter((item) => item.selected)
+    .map((item) => item.id)
+
   return (
-    <AppShell currentPath="/">
+    <AppShell
+      currentPath="/"
+      navItems={dashboard.navItems}
+      trackedTopics={dashboard.trackableTechnologies}
+      typeFilters={dashboard.topicFilters}
+    >
       <SearchHeader />
-      {/* <HeroPanel metrics={marketPulse} /> */}
+      {/* <HeroPanel metrics={dashboard.marketPulse} /> */}
 
       <div className="pt-6 lg:pt-0">
         <HomeFeed
-          stories={topStories}
-          typeFilters={topicFilters}
-          trackedTopics={trackableTechnologies}
+          stories={dashboard.topStories}
+          typeFilters={dashboard.topicFilters}
+          trackedTopics={dashboard.trackableTechnologies}
           defaultTopicIds={defaultHomeTopicIds}
         />
       </div>

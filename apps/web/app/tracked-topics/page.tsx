@@ -1,14 +1,22 @@
 import { AppShell } from "../_components/app-shell"
 import { InfoCard } from "../_components/info-card"
 import { StoryCard } from "../_components/story-card"
-import { topStories, trackableTechnologies } from "../_data/dashboard"
+import { getDashboardData } from "../_lib/dashboard-api"
 
-export default function TrackedTopicsPage() {
-  const trackedTopics = trackableTechnologies.filter((item) => item.selected)
+export default async function TrackedTopicsPage() {
+  const dashboard = await getDashboardData()
+  const trackedTopics = dashboard.trackableTechnologies.filter(
+    (item) => item.selected,
+  )
 
   return (
-    <AppShell currentPath="/tracked-topics">
-      <section className="rounded-[2rem] border border-base-300 bg-base-100 p-6 shadow-sm">
+    <AppShell
+      currentPath="/tracked-topics"
+      navItems={dashboard.navItems}
+      trackedTopics={dashboard.trackableTechnologies}
+      typeFilters={dashboard.topicFilters}
+    >
+      <section className="rounded-[2rem]   bg-base-100 p-6 shadow-sm">
         <p className="text-sm uppercase tracking-[0.24em] text-primary/70">
           Tracked Topics
         </p>
@@ -22,7 +30,7 @@ export default function TrackedTopicsPage() {
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <section className="space-y-8">
           {trackedTopics.map((topic) => {
-            const stories = topStories.filter((story) =>
+            const stories = dashboard.topStories.filter((story) =>
               story.topicIds.includes(topic.id),
             )
 
@@ -32,7 +40,7 @@ export default function TrackedTopicsPage() {
                 id={topic.id}
                 className="space-y-4 scroll-mt-8"
               >
-                <div className="flex flex-col gap-2 rounded-[1.5rem] border border-base-300 bg-base-200/40 p-5">
+                <div className="flex flex-col gap-2 rounded-[1.5rem]   bg-base-200/40 p-5">
                   <div className="flex items-center gap-3">
                     <h2 className="text-2xl font-bold">{topic.name}</h2>
                     <span className="badge badge-outline">{topic.group}</span>
@@ -55,7 +63,7 @@ export default function TrackedTopicsPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className="rounded-[1.5rem] border border-dashed border-base-300 bg-base-100 p-8 text-sm text-base-content/60">
+                  <div className="rounded-3xl border border-dashed border-base-300 bg-base-100 p-8 text-sm text-base-content/60">
                     このトピックに紐づく記事はまだありません。
                   </div>
                 )}
@@ -71,7 +79,7 @@ export default function TrackedTopicsPage() {
           >
             <div className="space-y-3 text-sm text-base-content/75">
               {trackedTopics.map((topic) => {
-                const count = topStories.filter((story) =>
+                const count = dashboard.topStories.filter((story) =>
                   story.topicIds.includes(topic.id),
                 ).length
 

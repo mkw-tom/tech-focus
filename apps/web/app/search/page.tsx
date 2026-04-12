@@ -2,7 +2,7 @@ import { AppShell } from "../_components/app-shell"
 import { InfoCard } from "../_components/info-card"
 import { SearchHeader } from "../_components/search-header"
 import { StoryCard } from "../_components/story-card"
-import { searchStories } from "../_data/dashboard"
+import { getDashboardData, searchStories } from "../_lib/dashboard-api"
 
 type SearchPageProps = {
   searchParams: Promise<{
@@ -11,12 +11,18 @@ type SearchPageProps = {
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
+  const dashboard = await getDashboardData()
   const { q = "" } = await searchParams
   const query = q.trim()
-  const stories = searchStories(query)
+  const stories = searchStories(dashboard.topStories, query)
 
   return (
-    <AppShell currentPath="">
+    <AppShell
+      currentPath=""
+      navItems={dashboard.navItems}
+      trackedTopics={dashboard.trackableTechnologies}
+      typeFilters={dashboard.topicFilters}
+    >
       <SearchHeader
         initialQuery={query}
         tabs={["Search Results", "Latest", "Research"]}
@@ -24,7 +30,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <section className="space-y-4">
-          <div className="rounded-[2rem] border border-base-300 bg-base-100 p-6 shadow-sm">
+          <div className="rounded-[2rem]   bg-base-100 p-6 shadow-sm">
             <p className="text-sm uppercase tracking-[0.24em] text-primary/70">
               Search
             </p>

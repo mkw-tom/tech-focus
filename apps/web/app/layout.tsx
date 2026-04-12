@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
+import { NeonAuthProvider } from "./_components/neon-auth-provider"
 import { StoryPreferenceProvider } from "./_components/story-preference-provider"
 import "./globals.css"
 
@@ -14,9 +15,11 @@ export default function RootLayout({
   children: ReactNode
 }>) {
   return (
-    <html lang="ja" data-theme="business">
+    <html lang="ja">
       <body>
-        <StoryPreferenceProvider>{children}</StoryPreferenceProvider>
+        <NeonAuthProvider>
+          <StoryPreferenceProvider>{children}</StoryPreferenceProvider>
+        </NeonAuthProvider>
       </body>
     </html>
   )

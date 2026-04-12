@@ -1,13 +1,20 @@
 import { AppShell } from "../_components/app-shell"
 import { InfoCard } from "../_components/info-card"
-import { trackableTechnologies } from "../_data/dashboard"
+import { getDashboardData } from "../_lib/dashboard-api"
 import { TechSelectionForm } from "./_components/tech-selection-form"
 
-export default function TopicsPage() {
+export default async function TopicsPage() {
+  const dashboard = await getDashboardData()
+
   return (
-    <AppShell currentPath="/topics">
+    <AppShell
+      currentPath="/topics"
+      navItems={dashboard.navItems}
+      trackedTopics={dashboard.trackableTechnologies}
+      typeFilters={dashboard.topicFilters}
+    >
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
-        <TechSelectionForm items={trackableTechnologies} />
+        <TechSelectionForm items={dashboard.trackableTechnologies} />
 
         <aside className="space-y-4">
           <InfoCard title="Selection Rules" badge="Draft">

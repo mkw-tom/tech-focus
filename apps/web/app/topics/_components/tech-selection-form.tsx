@@ -55,7 +55,7 @@ export function TechSelectionForm({ items }: TechSelectionFormProps) {
   }, [items, query, selectedGroups])
 
   return (
-    <section className="card border border-base-300 bg-base-100 shadow-sm">
+    <section className="card  bg-base-200 shadow-sm">
       <div className="card-body gap-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -68,15 +68,12 @@ export function TechSelectionForm({ items }: TechSelectionFormProps) {
               ここで選んだ技術ごとに feed と briefing を絞り込みます。
             </p>
           </div>
-          <button
-            type="button"
-            className="btn btn-primary bg-primary px-3 text-white"
-          >
+          <button type="button" className="btn btn-primary px-3">
             内容を更新
           </button>
         </div>
 
-        <div className="flex flex-col gap-4 rounded-[1.5rem] border border-base-300 bg-base-200/35 p-4">
+        <div className="flex flex-col gap-4 rounded-[1.5rem]   bg-base-200/35 p-4">
           <label className="input input-bordered flex items-center gap-3 rounded-2xl">
             <svg
               className="h-5 w-5 opacity-60"
@@ -104,7 +101,7 @@ export function TechSelectionForm({ items }: TechSelectionFormProps) {
             {groupOrder.map((group) => (
               <label
                 key={group}
-                className="flex items-center gap-2 rounded-full border border-base-300 bg-base-100 px-3 py-2"
+                className="flex items-center gap-2 rounded-full   bg-base-100 px-3 py-2"
               >
                 <input
                   type="checkbox"
@@ -132,7 +129,7 @@ export function TechSelectionForm({ items }: TechSelectionFormProps) {
                 {section.items.map((item) => (
                   <label
                     key={item.id}
-                    className="flex items-start gap-4 rounded-[1.5rem] border border-base-300 bg-base-200/55 p-5 transition hover:border-primary/40 hover:bg-base-200"
+                    className="flex items-start gap-4 rounded-[1.5rem]   bg-base-200/55 p-5 transition hover:border-primary/40 hover:bg-base-200"
                   >
                     <input
                       type="checkbox"

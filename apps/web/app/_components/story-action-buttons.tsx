@@ -31,7 +31,7 @@ export function StoryActionButtons({
       {showLike ? (
         <button
           type="button"
-          className={`flex items-center ${compact ? "text-2xl" : "gap-2 rounded-full border border-base-300 px-4 py-2 text-base"}`}
+          className={`flex items-center ${compact ? "text-2xl" : "gap-2 rounded-full   px-4 py-2 text-base"}`}
           onClick={() => toggleLike(storyId)}
         >
           {liked ? <FcLike /> : <FcLikePlaceholder />}
@@ -46,7 +46,7 @@ export function StoryActionButtons({
       {showBookmark ? (
         <button
           type="button"
-          className={`flex items-center ${compact ? "text-2xl" : "gap-2 rounded-full border border-base-300 px-4 py-2 text-base"}`}
+          className={`flex items-center ${compact ? "text-2xl" : "gap-2 rounded-full   px-4 py-2 text-base"}`}
           onClick={() => toggleBookmark(storyId)}
         >
           {bookmarked ? <MdBookmark /> : <MdBookmarkBorder />}

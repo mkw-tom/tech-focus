@@ -9,20 +9,23 @@ type SidebarNavProps = {
 
 export function SidebarNav({ currentPath, items }: SidebarNavProps) {
   return (
-    <nav className="menu gap-2 rounded-box bg-base-100/40 p-2">
-      {items.map((item) => (
-        <Link
-          key={item.id}
-          href={item.href}
-          className={
-            currentPath === item.href
-              ? "active rounded-2xl font-medium"
-              : "rounded-2xl font-medium text-base-content/70"
-          }
-        >
-          {item.label}
-        </Link>
-      ))}
+    <nav aria-label="Primary">
+      <ul className="menu gap-2 rounded-box bg-base-100/40 p-2">
+        {items.map((item) => (
+          <li key={item.id}>
+            <Link
+              href={item.href}
+              className={
+                currentPath === item.href
+                  ? "menu-active rounded-2xl font-medium"
+                  : "rounded-2xl font-medium text-base-content/70"
+              }
+            >
+              {item.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </nav>
   )
 }

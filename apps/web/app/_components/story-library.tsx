@@ -26,7 +26,7 @@ export function StoryLibrary({
 
   return (
     <section className="space-y-4">
-      <div className="rounded-[2rem] border border-base-300 bg-base-100 p-6 shadow-sm">
+      <div className="rounded-4xl   bg-base-100 p-6 shadow-sm">
         <p className="text-sm uppercase tracking-[0.24em] text-primary/70">
           Story Library
         </p>
@@ -41,7 +41,7 @@ export function StoryLibrary({
           <StoryCard key={`${mode}-${story.id}`} story={story} />
         ))
       ) : (
-        <div className="rounded-[1.5rem] border border-dashed border-base-300 bg-base-100 p-8 text-center text-sm text-base-content/60">
+        <div className="rounded-3xl border border-dashed border-base-300 bg-base-100 p-8 text-center text-sm text-base-content/60">
           {emptyMessage}
         </div>
       )}

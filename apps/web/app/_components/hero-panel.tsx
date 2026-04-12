@@ -6,7 +6,7 @@ type HeroPanelProps = {
 
 export function HeroPanel({ metrics }: HeroPanelProps) {
   return (
-    <section className="rounded-[2rem] border border-base-300 bg-gradient-to-b to-black from-primary p-6 text-base-100 shadow-2xl">
+    <section className="rounded-[2rem]   bg-gradient-to-b to-black from-primary p-6 text-base-100 shadow-2xl">
       <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-3xl">
           <p className="text-sm uppercase tracking-[0.24em] text-info/80">

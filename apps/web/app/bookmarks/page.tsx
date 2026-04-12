@@ -1,16 +1,23 @@
 import { AppShell } from "../_components/app-shell"
 import { InfoCard } from "../_components/info-card"
 import { StoryLibrary } from "../_components/story-library"
-import { topStories } from "../_data/dashboard"
+import { getDashboardData } from "../_lib/dashboard-api"
 
-export default function BookmarksPage() {
+export default async function BookmarksPage() {
+  const dashboard = await getDashboardData()
+
   return (
-    <AppShell currentPath="/bookmarks">
+    <AppShell
+      currentPath="/bookmarks"
+      navItems={dashboard.navItems}
+      trackedTopics={dashboard.trackableTechnologies}
+      typeFilters={dashboard.topicFilters}
+    >
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <StoryLibrary
           emptyMessage="ブックマークした記事はまだありません。スレッド右上やカード右上から保存できます。"
           mode="bookmarks"
-          stories={topStories}
+          stories={dashboard.topStories}
           title="ブックマークした記事"
         />
 

@@ -38,6 +38,21 @@ export type Story = {
   }
 }
 
+export type VersionUpdate = {
+  id: string
+  topic: string
+  sourceType: "github_release"
+  sourceName: string
+  sourceUrl: string
+  externalId: string
+  title: string
+  version: string
+  rawContent: string
+  publishedAt: string
+  category: "update"
+  importance: number
+}
+
 export type WatchlistItem = {
   label: string
   value: string

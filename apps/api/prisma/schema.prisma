@@ -24,6 +24,14 @@ enum TechnologyGroup {
   TOOL
 }
 
+enum VersionUpdateSourceType {
+  GITHUB_RELEASE
+}
+
+enum VersionUpdateCategory {
+  UPDATE
+}
+
 model NavItem {
   id        String   @id
   label     String
@@ -71,8 +79,32 @@ model Technology {
   description String
   isTracked   Boolean     @default(false)
   stories     StoryTopic[]
+  versionUpdates VersionUpdate[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
+}
+
+model VersionUpdate {
+  id          String                  @id @default(cuid())
+  technologyId String?
+  topic       String
+  sourceType  VersionUpdateSourceType
+  sourceName  String
+  sourceUrl   String
+  externalId  String                  @unique
+  title       String
+  version     String
+  rawContent  String
+  publishedAt DateTime
+  category    VersionUpdateCategory
+  importance  Int
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+  technology  Technology?             @relation(fields: [technologyId], references: [id], onDelete: SetNull)
+
+  @@unique([topic, version, sourceType])
+  @@index([technologyId, publishedAt])
+  @@index([topic, publishedAt])
 }
 
 model Story {

@@ -1,18 +1,8 @@
 import { serve } from "@hono/node-server"
-import { Hono } from "hono"
+import { createApp } from "./app.js"
 
-const app = new Hono()
-
-app.get("/", (c) =>
-  c.json({
-    name: "@tech-focus/api",
-    message: "Hono server is running",
-  }),
-)
-
-app.get("/health", (c) => c.json({ ok: true }))
-
-const port = 8787
+const port = Number(process.env.PORT ?? 8787)
+const app = createApp()
 
 serve(
   {

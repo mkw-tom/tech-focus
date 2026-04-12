@@ -3,19 +3,37 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "NODE_ENV=development tsx watch src/index.ts",
     "build": "tsc --outDir dist",
-    "start": "node dist/index.js",
+    "start": "NODE_ENV=production node dist/index.js",
+    "job:sync-version-updates": "NODE_ENV=development tsx src/jobs/sync-version-updates-job.ts",
+    "job:sync-version-updates:prod": "NODE_ENV=production tsx src/jobs/sync-version-updates-job.ts",
+    "db:generate": "prisma generate",
+    "db:push": "NODE_ENV=development prisma db push",
+    "db:push:prod": "NODE_ENV=production prisma db push",
+    "db:migrate": "NODE_ENV=development prisma migrate dev",
+    "db:seed": "NODE_ENV=development tsx prisma/seed.ts",
+    "db:seed:prod": "NODE_ENV=production tsx prisma/seed.ts",
+    "db:studio": "NODE_ENV=development prisma studio",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "format:check": "biome format ."
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.0",
-    "hono": "^4.6.0"
+    "@prisma/adapter-neon": "^7.7.0",
+    "@prisma/client": "^7.7.0",
+    "dotenv": "^17.4.1",
+    "hono": "^4.6.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "prisma": "^7.7.0",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
   }

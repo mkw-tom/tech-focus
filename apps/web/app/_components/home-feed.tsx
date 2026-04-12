@@ -1,15 +1,22 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import type { Story, Topic, TrackableTechnology } from "../_data/dashboard"
+import type {
+  Story,
+  Topic,
+  TrackableTechnology,
+  VersionUpdate,
+} from "../_data/dashboard"
 import { StoryCard } from "./story-card"
 import { TopicFilterBar } from "./topic-filter-bar"
+import { VersionUpdateCard } from "./version-update-card"
 
 type HomeFeedProps = {
   stories: Story[]
   typeFilters: Topic[]
   trackedTopics: TrackableTechnology[]
   defaultTopicIds: string[]
+  versionUpdates: VersionUpdate[]
 }
 
 export function HomeFeed({
@@ -17,6 +24,7 @@ export function HomeFeed({
   typeFilters,
   trackedTopics,
   defaultTopicIds,
+  versionUpdates,
 }: HomeFeedProps) {
   const [selectedType, setSelectedType] = useState(typeFilters[0]?.label ?? "")
   const [selectedTopicIds, setSelectedTopicIds] =
@@ -34,6 +42,11 @@ export function HomeFeed({
   }, [selectedTopicIds, selectedType, stories])
 
   const visibleTopics = trackedTopics.filter((topic) => topic.selected)
+  const filteredVersionUpdates = useMemo(() => {
+    return versionUpdates.filter((item) =>
+      selectedTopicIds.includes(item.topic),
+    )
+  }, [selectedTopicIds, versionUpdates])
 
   const toggleTopic = (topicId: string) => {
     if (selectedTopicIds.length === 1 && selectedTopicIds.includes(topicId)) {
@@ -88,6 +101,39 @@ export function HomeFeed({
       </section>
 
       <section className="space-y-4">
+        {selectedType === "アップデート" && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm uppercase tracking-[0.24em] text-primary/70">
+                  Version Updates
+                </p>
+                <h2 className="mt-2 text-xl font-bold">
+                  GitHub Releases から取得した更新情報
+                </h2>
+              </div>
+              <span className="text-sm text-base-content/50">
+                {filteredVersionUpdates.length} items
+              </span>
+            </div>
+
+            {filteredVersionUpdates.length > 0 ? (
+              filteredVersionUpdates.map((item) => (
+                <VersionUpdateCard
+                  key={item.externalId}
+                  item={item}
+                  trackedTopics={trackedTopics}
+                />
+              ))
+            ) : (
+              <div className="rounded-[1.5rem] border border-dashed border-base-300 bg-base-200/40 p-8 text-center text-sm text-base-content/60">
+                まだ version update が同期されていません。job
+                実行後にここへ表示されます。
+              </div>
+            )}
+          </div>
+        )}
+
         {filteredStories.length > 0 ? (
           filteredStories.map((story) => (
             <StoryCard key={`${story.kind}-${story.title}`} story={story} />

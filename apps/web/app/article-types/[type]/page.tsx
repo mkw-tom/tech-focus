@@ -2,8 +2,8 @@ import { notFound } from "next/navigation"
 
 import { AppShell } from "../../_components/app-shell"
 import { InfoCard } from "../../_components/info-card"
-import { StoryCard } from "../../_components/story-card"
-import { getDashboardData } from "../../_lib/dashboard-api"
+import { getDashboardData, getVersionUpdates } from "../../_lib/dashboard-api"
+import { ArticleTypeFeed } from "./article-type-feed"
 
 const articleTypeMap = {
   update: "アップデート",
@@ -34,6 +34,21 @@ export default async function ArticleTypePage({
   const relatedTopics = dashboard.trackableTechnologies.filter((topic) =>
     stories.some((story) => story.topicIds.includes(topic.id)),
   )
+  const defaultTopicIds = (
+    selectedType === "アップデート"
+      ? dashboard.trackableTechnologies.filter((item) => item.selected)
+      : relatedTopics
+  ).map((item) => item.id)
+  const versionUpdates =
+    selectedType === "アップデート"
+      ? await getVersionUpdates(defaultTopicIds)
+      : []
+  const relatedDisplayTopics =
+    selectedType === "アップデート"
+      ? dashboard.trackableTechnologies.filter((topic) =>
+          defaultTopicIds.includes(topic.id),
+        )
+      : relatedTopics
 
   return (
     <AppShell
@@ -55,19 +70,21 @@ export default async function ArticleTypePage({
       </section>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
-        <section className="space-y-4">
-          {stories.map((story) => (
-            <StoryCard key={`${story.kind}-${story.title}`} story={story} />
-          ))}
-        </section>
+        <ArticleTypeFeed
+          defaultTopicIds={defaultTopicIds}
+          stories={stories}
+          trackedTopics={dashboard.trackableTechnologies}
+          type={type as "update" | "incident" | "trend"}
+          versionUpdates={versionUpdates}
+        />
 
         <aside className="space-y-4">
           <InfoCard
             title="Related Topics"
-            badge={`${relatedTopics.length} topics`}
+            badge={`${relatedDisplayTopics.length} topics`}
           >
             <div className="space-y-3 text-sm text-base-content/75">
-              {relatedTopics.map((topic) => (
+              {relatedDisplayTopics.map((topic) => (
                 <a
                   key={topic.id}
                   href={`/tracked-topics#${topic.id}`}

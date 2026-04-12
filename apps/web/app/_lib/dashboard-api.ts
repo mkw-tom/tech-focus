@@ -18,6 +18,7 @@ import type {
   Topic,
   TrackableTechnology,
   TrendMetric,
+  VersionUpdate,
   WatchlistItem,
 } from "../_data/dashboard"
 
@@ -117,6 +118,27 @@ export async function getStories(): Promise<Story[]> {
   } catch (error) {
     logApiFallback("/stories", error)
     return fallbackTopStories
+  }
+}
+
+export async function getVersionUpdates(topicIds?: string[]) {
+  const params = new URLSearchParams()
+
+  if (topicIds?.length === 1) {
+    params.set("topic", topicIds[0])
+  }
+
+  params.set("limit", "30")
+
+  try {
+    const response = await apiFetch<{ items: VersionUpdate[] }>(
+      `/version-updates?${params.toString()}`,
+    )
+
+    return response.items
+  } catch (error) {
+    logApiFallback("/version-updates", error)
+    return []
   }
 }
 

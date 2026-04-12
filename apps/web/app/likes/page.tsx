@@ -1,16 +1,23 @@
 import { AppShell } from "../_components/app-shell"
 import { InfoCard } from "../_components/info-card"
 import { StoryLibrary } from "../_components/story-library"
-import { topStories } from "../_data/dashboard"
+import { getDashboardData } from "../_lib/dashboard-api"
 
-export default function LikesPage() {
+export default async function LikesPage() {
+  const dashboard = await getDashboardData()
+
   return (
-    <AppShell currentPath="/likes">
+    <AppShell
+      currentPath="/likes"
+      navItems={dashboard.navItems}
+      trackedTopics={dashboard.trackableTechnologies}
+      typeFilters={dashboard.topicFilters}
+    >
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <StoryLibrary
           emptyMessage="いいねした記事はまだありません。スレッドを開いてからいいねできます。"
           mode="likes"
-          stories={topStories}
+          stories={dashboard.topStories}
           title="いいねした記事"
         />
 

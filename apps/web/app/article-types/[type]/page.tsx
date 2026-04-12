@@ -3,11 +3,7 @@ import { notFound } from "next/navigation"
 import { AppShell } from "../../_components/app-shell"
 import { InfoCard } from "../../_components/info-card"
 import { StoryCard } from "../../_components/story-card"
-import {
-  topStories,
-  topicFilters,
-  trackableTechnologies,
-} from "../../_data/dashboard"
+import { getDashboardData } from "../../_lib/dashboard-api"
 
 const articleTypeMap = {
   update: "アップデート",
@@ -21,15 +17,10 @@ type ArticleTypePageProps = {
   }>
 }
 
-export function generateStaticParams() {
-  return topicFilters.map((item) => ({
-    type: item.id,
-  }))
-}
-
 export default async function ArticleTypePage({
   params,
 }: ArticleTypePageProps) {
+  const dashboard = await getDashboardData()
   const { type } = await params
   const selectedType = articleTypeMap[type as keyof typeof articleTypeMap]
 
@@ -37,14 +28,21 @@ export default async function ArticleTypePage({
     notFound()
   }
 
-  const stories = topStories.filter((story) => story.kind === selectedType)
-  const relatedTopics = trackableTechnologies.filter((topic) =>
+  const stories = dashboard.topStories.filter(
+    (story) => story.kind === selectedType,
+  )
+  const relatedTopics = dashboard.trackableTechnologies.filter((topic) =>
     stories.some((story) => story.topicIds.includes(topic.id)),
   )
 
   return (
-    <AppShell currentPath={`/article-types/${type}`}>
-      <section className="rounded-[2rem] border border-base-300 bg-base-100 p-6 shadow-sm">
+    <AppShell
+      currentPath={`/article-types/${type}`}
+      navItems={dashboard.navItems}
+      trackedTopics={dashboard.trackableTechnologies}
+      typeFilters={dashboard.topicFilters}
+    >
+      <section className="rounded-4xl   bg-base-100 p-6 shadow-sm">
         <p className="text-sm uppercase tracking-[0.24em] text-primary/70">
           Article Type
         </p>

@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum StoryKind {
+  UPDATE
+  INCIDENT
+  TREND
+}
+
+enum DashboardMetricKind {
+  MARKET_PULSE
+  WATCHLIST
+}
+
+enum TechnologyGroup {
+  LANGUAGE
+  FRAMEWORK
+  LIBRARY
+  TOOL
+}
+
+model NavItem {
+  id        String   @id
+  label     String
+  href      String
+  sortOrder Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TopicFilter {
+  id        String   @id
+  label     String
+  isActive  Boolean  @default(false)
+  sortOrder Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DashboardMetric {
+  id        String              @id
+  kind      DashboardMetricKind
+  label     String
+  value     String
+  tone      String
+  sortOrder Int
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+
+  @@index([kind, sortOrder])
+}
+
+model BriefingPoint {
+  id        String   @id
+  body      String
+  sortOrder Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Technology {
+  id          String      @id
+  name        String      @unique
+  group       TechnologyGroup
+  category    String
+  description String
+  isTracked   Boolean     @default(false)
+  stories     StoryTopic[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Story {
+  id            String               @id
+  likesCount    Int                  @default(0)
+  kind          StoryKind
+  category      String
+  title         String
+  summary       String
+  source        String
+  timeLabel     String
+  whyItMatters  String
+  overview      String
+  topics        StoryTopic[]
+  keyPoints     StoryKeyPoint[]
+  timeline      StoryTimelineEntry[]
+  relatedLinks  StoryRelatedLink[]
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  @@index([kind])
+}
+
+model StoryKeyPoint {
+  id        String   @id
+  storyId    String
+  content   String
+  sortOrder Int
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@index([storyId, sortOrder])
+}
+
+model StoryTimelineEntry {
+  id        String   @id
+  storyId    String
+  content   String
+  sortOrder Int
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@index([storyId, sortOrder])
+}
+
+model StoryRelatedLink {
+  id        String   @id
+  storyId    String
+  label     String
+  url       String
+  sortOrder Int
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@index([storyId, sortOrder])
+}
+
+model StoryTopic {
+  storyId      String
+  technologyId String
+  story        Story      @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  technology   Technology @relation(fields: [technologyId], references: [id], onDelete: Cascade)
+
+  @@id([storyId, technologyId])
+  @@index([technologyId])
+}

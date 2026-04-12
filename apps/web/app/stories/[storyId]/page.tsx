@@ -3,11 +3,7 @@ import { notFound } from "next/navigation"
 import { AppShell } from "../../_components/app-shell"
 import { InfoCard } from "../../_components/info-card"
 import { StoryActionButtons } from "../../_components/story-action-buttons"
-import {
-  getStoryById,
-  topStories,
-  trackableTechnologies,
-} from "../../_data/dashboard"
+import { getDashboardData, getStoryById } from "../../_lib/dashboard-api"
 import { ArticleChatPanel } from "../_components/article-chat-panel"
 
 type StoryDetailPageProps = {
@@ -16,29 +12,31 @@ type StoryDetailPageProps = {
   }>
 }
 
-export function generateStaticParams() {
-  return topStories.map((story) => ({
-    storyId: story.id,
-  }))
-}
-
 export default async function StoryDetailPage({
   params,
 }: StoryDetailPageProps) {
   const { storyId } = await params
-  const story = getStoryById(storyId)
+  const dashboard = await getDashboardData()
+  const story =
+    dashboard.topStories.find((item) => item.id === storyId) ??
+    (await getStoryById(storyId))
 
   if (!story) {
     notFound()
   }
 
-  const relatedTopics = trackableTechnologies.filter((topic) =>
+  const relatedTopics = dashboard.trackableTechnologies.filter((topic) =>
     story.topicIds.includes(topic.id),
   )
 
   return (
-    <AppShell currentPath="">
-      <section className="rounded-[2rem] border border-base-300 bg-base-100 p-6 shadow-sm">
+    <AppShell
+      currentPath=""
+      navItems={dashboard.navItems}
+      trackedTopics={dashboard.trackableTechnologies}
+      typeFilters={dashboard.topicFilters}
+    >
+      <section className="rounded-[2rem]   bg-base-100 p-6 shadow-sm">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-wrap items-center gap-3">
             <span className="badge badge-accent">{story.kind}</span>

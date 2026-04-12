@@ -75,7 +75,7 @@ export function SearchHeader({
 
   return (
     <>
-      <header className="sticky top-0 z-20 hidden rounded-[2rem] border border-base-300 bg-base-100/75 px-4 py-4 shadow-sm backdrop-blur lg:block">
+      <header className="sticky top-0 z-20 hidden rounded-4xl   bg-base-100/75 px-4 py-4 shadow-sm backdrop-blur md:block">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="w-full lg:max-w-2xl">
             <SearchForm
@@ -87,9 +87,9 @@ export function SearchHeader({
         </div>
       </header>
 
-      <div className="pointer-events-none fixed inset-x-4 top-24 z-[60] flex justify-end lg:hidden">
+      <div className="pointer-events-none fixed inset-x-4 top-20 z-50 flex justify-end md:hidden">
         <div
-          className={`pointer-events-auto mt-2 flex items-center gap-3 overflow-hidden rounded-3xl border border-base-300 bg-base-100/95 shadow-xl backdrop-blur transition-all duration-300 ease-out ${
+          className={`pointer-events-auto mt-2 flex items-center gap-3 overflow-hidden rounded-3xl   bg-base-100/95 shadow-xl backdrop-blur transition-all duration-300 ease-out ${
             isMobileOpen
               ? "w-[min(22rem,calc(100vw-2rem))] px-2 py-2"
               : "w-14 px-1.5 py-1.5"

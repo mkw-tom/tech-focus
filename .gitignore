@@ -5,3 +5,13 @@ dist
 .DS_Store
 coverage
 .pnpm-store
+.env
+.env.*
+!.env.example
+!.env.development.example
+!.env.production.example
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.development.example
+!**/.env.production.example

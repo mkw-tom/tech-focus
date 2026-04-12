@@ -10,7 +10,7 @@ type StoryCardProps = {
 
 export function StoryCard({ story }: StoryCardProps) {
   return (
-    <article className="card border border-base-300 bg-base-100 shadow-sm transition hover:-translate-y-0.5 hover:shadow-xl">
+    <article className="card   bg-base-100 shadow-sm transition hover:-translate-y-0.5 hover:shadow-xl">
       <div className="card-body gap-5 p-5 sm:p-6">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-wrap items-center gap-3">
@@ -59,7 +59,7 @@ export function StoryCard({ story }: StoryCardProps) {
           <div className="flex gap-2">
             <Link
               href={`/stories/${story.id}`}
-              className="btn btn-primary bg-primary px-3 text-white"
+              className="btn btn-primary px-3"
             >
               スレッドを開く
             </Link>

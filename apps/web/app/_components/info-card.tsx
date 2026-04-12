@@ -8,7 +8,7 @@ type InfoCardProps = {
 
 export function InfoCard({ title, badge, children }: InfoCardProps) {
   return (
-    <section className="card border border-base-300 bg-base-100 shadow-sm">
+    <section className="card   bg-base-100 shadow-sm">
       <div className="card-body">
         <div className="flex items-center justify-between">
           <h2 className="card-title">{title}</h2>

@@ -1,9 +1,11 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import { IncidentCard } from "../../_components/incident-card"
 import { StoryCard } from "../../_components/story-card"
 import { VersionUpdateCard } from "../../_components/version-update-card"
 import type {
+  Incident,
   Story,
   TrackableTechnology,
   VersionUpdate,
@@ -11,6 +13,7 @@ import type {
 
 type ArticleTypeFeedProps = {
   defaultTopicIds: string[]
+  incidents: Incident[]
   stories: Story[]
   trackedTopics: TrackableTechnology[]
   type: "update" | "incident" | "trend"
@@ -19,6 +22,7 @@ type ArticleTypeFeedProps = {
 
 export function ArticleTypeFeed({
   defaultTopicIds,
+  incidents,
   stories,
   trackedTopics,
   type,
@@ -40,6 +44,9 @@ export function ArticleTypeFeed({
       selectedTopicIds.includes(item.topic),
     )
   }, [selectedTopicIds, versionUpdates])
+  const filteredIncidents = useMemo(() => {
+    return incidents.filter((item) => selectedTopicIds.includes(item.topic))
+  }, [incidents, selectedTopicIds])
 
   const toggleTopic = (topicId: string) => {
     if (selectedTopicIds.length === 1 && selectedTopicIds.includes(topicId)) {
@@ -94,6 +101,21 @@ export function ArticleTypeFeed({
           ) : (
             <div className="rounded-[1.5rem] border border-dashed border-base-300 bg-base-200/40 p-8 text-center text-sm text-base-content/60">
               条件に一致する version update がありません。topic
+              の選択を変更してください。
+            </div>
+          )
+        ) : type === "incident" ? (
+          filteredIncidents.length > 0 ? (
+            filteredIncidents.map((item) => (
+              <IncidentCard
+                key={item.externalId}
+                item={item}
+                trackedTopics={trackedTopics}
+              />
+            ))
+          ) : (
+            <div className="rounded-[1.5rem] border border-dashed border-base-300 bg-base-200/40 p-8 text-center text-sm text-base-content/60">
+              条件に一致する incident がありません。topic
               の選択を変更してください。
             </div>
           )

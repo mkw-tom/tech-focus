@@ -2,7 +2,11 @@ import { notFound } from "next/navigation"
 
 import { AppShell } from "../../_components/app-shell"
 import { InfoCard } from "../../_components/info-card"
-import { getDashboardData, getVersionUpdates } from "../../_lib/dashboard-api"
+import {
+  getDashboardData,
+  getIncidents,
+  getVersionUpdates,
+} from "../../_lib/dashboard-api"
 import { ArticleTypeFeed } from "./article-type-feed"
 
 const articleTypeMap = {
@@ -37,8 +41,12 @@ export default async function ArticleTypePage({
   const defaultTopicIds = (
     selectedType === "アップデート"
       ? dashboard.trackableTechnologies.filter((item) => item.selected)
-      : relatedTopics
+      : selectedType === "インシデント"
+        ? dashboard.trackableTechnologies.filter((item) => item.selected)
+        : relatedTopics
   ).map((item) => item.id)
+  const incidents =
+    selectedType === "インシデント" ? await getIncidents(defaultTopicIds) : []
   const versionUpdates =
     selectedType === "アップデート"
       ? await getVersionUpdates(defaultTopicIds)
@@ -72,6 +80,7 @@ export default async function ArticleTypePage({
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
         <ArticleTypeFeed
           defaultTopicIds={defaultTopicIds}
+          incidents={incidents}
           stories={stories}
           trackedTopics={dashboard.trackableTechnologies}
           type={type as "update" | "incident" | "trend"}

@@ -53,6 +53,22 @@ export type VersionUpdate = {
   importance: number
 }
 
+export type Incident = {
+  id: string
+  topic: string
+  sourceType: "github_advisory"
+  sourceName: string
+  sourceUrl: string
+  externalId: string
+  title: string
+  rawContent: string
+  severity: string
+  packageName: string | null
+  publishedAt: string
+  category: "incident"
+  importance: number
+}
+
 export type WatchlistItem = {
   label: string
   value: string

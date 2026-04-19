@@ -13,6 +13,7 @@ import {
 } from "../_data/dashboard"
 
 import type {
+  Incident,
   NavItem,
   Story,
   Topic,
@@ -138,6 +139,27 @@ export async function getVersionUpdates(topicIds?: string[]) {
     return response.items
   } catch (error) {
     logApiFallback("/version-updates", error)
+    return []
+  }
+}
+
+export async function getIncidents(topicIds?: string[]) {
+  const params = new URLSearchParams()
+
+  if (topicIds?.length === 1) {
+    params.set("topic", topicIds[0])
+  }
+
+  params.set("limit", "30")
+
+  try {
+    const response = await apiFetch<{ items: Incident[] }>(
+      `/incidents?${params.toString()}`,
+    )
+
+    return response.items
+  } catch (error) {
+    logApiFallback("/incidents", error)
     return []
   }
 }

@@ -32,6 +32,14 @@ enum VersionUpdateCategory {
   UPDATE
 }
 
+enum IncidentSourceType {
+  GITHUB_ADVISORY
+}
+
+enum IncidentCategory {
+  INCIDENT
+}
+
 model NavItem {
   id        String   @id
   label     String
@@ -72,16 +80,17 @@ model BriefingPoint {
 }
 
 model Technology {
-  id          String      @id
-  name        String      @unique
-  group       TechnologyGroup
-  category    String
-  description String
-  isTracked   Boolean     @default(false)
-  stories     StoryTopic[]
+  id             String          @id
+  name           String          @unique
+  group          TechnologyGroup
+  category       String
+  description    String
+  isTracked      Boolean         @default(false)
+  stories        StoryTopic[]
+  incidents      Incident[]
   versionUpdates VersionUpdate[]
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model VersionUpdate {
@@ -103,6 +112,29 @@ model VersionUpdate {
   technology  Technology?             @relation(fields: [technologyId], references: [id], onDelete: SetNull)
 
   @@unique([topic, version, sourceType])
+  @@index([technologyId, publishedAt])
+  @@index([topic, publishedAt])
+}
+
+model Incident {
+  id           String             @id @default(cuid())
+  technologyId String?
+  topic        String
+  sourceType   IncidentSourceType
+  sourceName   String
+  sourceUrl    String
+  externalId   String             @unique
+  title        String
+  rawContent   String
+  severity     String
+  packageName  String?
+  publishedAt  DateTime
+  category     IncidentCategory
+  importance   Int
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  technology   Technology?        @relation(fields: [technologyId], references: [id], onDelete: SetNull)
+
   @@index([technologyId, publishedAt])
   @@index([topic, publishedAt])
 }

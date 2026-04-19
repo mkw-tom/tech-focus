@@ -3,13 +3,18 @@ import { HeroPanel } from "./_components/hero-panel"
 import { HomeFeed } from "./_components/home-feed"
 import { InfoCard } from "./_components/info-card"
 import { SearchHeader } from "./_components/search-header"
-import { getDashboardData, getVersionUpdates } from "./_lib/dashboard-api"
+import {
+  getDashboardData,
+  getIncidents,
+  getVersionUpdates,
+} from "./_lib/dashboard-api"
 
 export default async function HomePage() {
   const dashboard = await getDashboardData()
   const defaultHomeTopicIds = dashboard.trackableTechnologies
     .filter((item) => item.selected)
     .map((item) => item.id)
+  const incidents = await getIncidents(defaultHomeTopicIds)
   const versionUpdates = await getVersionUpdates(defaultHomeTopicIds)
 
   return (
@@ -28,6 +33,7 @@ export default async function HomePage() {
           typeFilters={dashboard.topicFilters}
           trackedTopics={dashboard.trackableTechnologies}
           defaultTopicIds={defaultHomeTopicIds}
+          incidents={incidents}
           versionUpdates={versionUpdates}
         />
       </div>

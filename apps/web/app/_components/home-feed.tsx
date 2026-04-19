@@ -2,11 +2,13 @@
 
 import { useMemo, useState } from "react"
 import type {
+  Incident,
   Story,
   Topic,
   TrackableTechnology,
   VersionUpdate,
 } from "../_data/dashboard"
+import { IncidentCard } from "./incident-card"
 import { StoryCard } from "./story-card"
 import { TopicFilterBar } from "./topic-filter-bar"
 import { VersionUpdateCard } from "./version-update-card"
@@ -16,6 +18,7 @@ type HomeFeedProps = {
   typeFilters: Topic[]
   trackedTopics: TrackableTechnology[]
   defaultTopicIds: string[]
+  incidents: Incident[]
   versionUpdates: VersionUpdate[]
 }
 
@@ -24,6 +27,7 @@ export function HomeFeed({
   typeFilters,
   trackedTopics,
   defaultTopicIds,
+  incidents,
   versionUpdates,
 }: HomeFeedProps) {
   const [selectedType, setSelectedType] = useState(typeFilters[0]?.label ?? "")
@@ -47,6 +51,9 @@ export function HomeFeed({
       selectedTopicIds.includes(item.topic),
     )
   }, [selectedTopicIds, versionUpdates])
+  const filteredIncidents = useMemo(() => {
+    return incidents.filter((item) => selectedTopicIds.includes(item.topic))
+  }, [incidents, selectedTopicIds])
 
   const toggleTopic = (topicId: string) => {
     if (selectedTopicIds.length === 1 && selectedTopicIds.includes(topicId)) {
@@ -134,15 +141,51 @@ export function HomeFeed({
           </div>
         )}
 
-        {filteredStories.length > 0 ? (
+        {selectedType === "インシデント" && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm uppercase tracking-[0.24em] text-error/80">
+                  Incidents
+                </p>
+                <h2 className="mt-2 text-xl font-bold">
+                  GitHub Advisory から取得したセキュリティ情報
+                </h2>
+              </div>
+              <span className="text-sm text-base-content/50">
+                {filteredIncidents.length} items
+              </span>
+            </div>
+
+            {filteredIncidents.length > 0 ? (
+              filteredIncidents.map((item) => (
+                <IncidentCard
+                  key={item.externalId}
+                  item={item}
+                  trackedTopics={trackedTopics}
+                />
+              ))
+            ) : (
+              <div className="rounded-[1.5rem] border border-dashed border-base-300 bg-base-200/40 p-8 text-center text-sm text-base-content/60">
+                まだ incident が同期されていません。job
+                実行後にここへ表示されます。
+              </div>
+            )}
+          </div>
+        )}
+
+        {selectedType !== "アップデート" &&
+        selectedType !== "インシデント" &&
+        filteredStories.length > 0 ? (
           filteredStories.map((story) => (
             <StoryCard key={`${story.kind}-${story.title}`} story={story} />
           ))
-        ) : (
+        ) : selectedType !== "アップデート" &&
+          selectedType !== "インシデント" ? (
           <div className="rounded-[1.5rem] border border-dashed border-base-300 bg-base-200/40 p-8 text-center text-sm text-base-content/60">
             条件に一致する記事がありません。記事の種類かトピック選択を変更してください。
           </div>
-        )}
+        ) : null}
       </section>
     </div>
   )

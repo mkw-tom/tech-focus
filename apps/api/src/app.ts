@@ -2,6 +2,7 @@ import { Hono } from "hono"
 import { loadEnv } from "./lib/load-env.js"
 import { dashboardRoutes } from "./routes/dashboard-routes.js"
 import { healthRoutes } from "./routes/health-routes.js"
+import { incidentRoutes } from "./routes/incident-routes.js"
 import { storyRoutes } from "./routes/story-routes.js"
 import { versionRoutes } from "./routes/version-routes.js"
 
@@ -20,6 +21,7 @@ export function createApp() {
 
   app.route("/health", healthRoutes)
   app.route("/dashboard", dashboardRoutes)
+  app.route("/incidents", incidentRoutes)
   app.route("/stories", storyRoutes)
   app.route("/version-updates", versionRoutes)
 

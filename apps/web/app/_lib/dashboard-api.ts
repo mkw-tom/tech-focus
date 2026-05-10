@@ -1,5 +1,16 @@
 import "server-only"
 
+import {
+  type DashboardDataDto,
+  type IncidentDto,
+  type StoryDto,
+  type VersionUpdateDto,
+  dashboardDataDtoSchema,
+  incidentsResponseSchema,
+  storiesResponseSchema,
+  storyResponseSchema,
+  versionUpdatesResponseSchema,
+} from "@tech-focus/shared"
 import { notFound } from "next/navigation"
 import {
   type Story as FallbackStory,
@@ -12,26 +23,7 @@ import {
   watchlistItems as fallbackWatchlistItems,
 } from "../_data/dashboard"
 
-import type {
-  Incident,
-  NavItem,
-  Story,
-  Topic,
-  TrackableTechnology,
-  TrendMetric,
-  VersionUpdate,
-  WatchlistItem,
-} from "../_data/dashboard"
-
-export type DashboardData = {
-  navItems: NavItem[]
-  topicFilters: Topic[]
-  marketPulse: TrendMetric[]
-  briefingPoints: string[]
-  watchlistItems: WatchlistItem[]
-  trackableTechnologies: TrackableTechnology[]
-  topStories: Story[]
-}
+export type DashboardData = DashboardDataDto
 
 const apiBaseUrl =
   process.env.API_BASE_URL ??
@@ -63,7 +55,10 @@ function logApiFallback(path: string, error: unknown) {
   console.warn(`Falling back to local dashboard data for ${path}`, error)
 }
 
-async function apiFetch<T>(path: string): Promise<T> {
+async function apiFetch<T>(
+  path: string,
+  schema: { parse: (input: unknown) => T },
+): Promise<T> {
   let lastStatus: number | undefined
   let lastError: unknown
 
@@ -75,7 +70,7 @@ async function apiFetch<T>(path: string): Promise<T> {
       })
 
       if (response.ok) {
-        return response.json() as Promise<T>
+        return schema.parse(await response.json())
       }
 
       lastStatus = response.status
@@ -105,16 +100,16 @@ async function apiFetch<T>(path: string): Promise<T> {
 
 export async function getDashboardData(): Promise<DashboardData> {
   try {
-    return await apiFetch<DashboardData>("/dashboard")
+    return await apiFetch("/dashboard", dashboardDataDtoSchema)
   } catch (error) {
     logApiFallback("/dashboard", error)
     return fallbackDashboardData
   }
 }
 
-export async function getStories(): Promise<Story[]> {
+export async function getStories(): Promise<StoryDto[]> {
   try {
-    const response = await apiFetch<{ items: Story[] }>("/stories")
+    const response = await apiFetch("/stories", storiesResponseSchema)
     return response.items
   } catch (error) {
     logApiFallback("/stories", error)
@@ -122,7 +117,9 @@ export async function getStories(): Promise<Story[]> {
   }
 }
 
-export async function getVersionUpdates(topicIds?: string[]) {
+export async function getVersionUpdates(
+  topicIds?: string[],
+): Promise<VersionUpdateDto[]> {
   const params = new URLSearchParams()
 
   if (topicIds?.length === 1) {
@@ -132,8 +129,9 @@ export async function getVersionUpdates(topicIds?: string[]) {
   params.set("limit", "30")
 
   try {
-    const response = await apiFetch<{ items: VersionUpdate[] }>(
+    const response = await apiFetch(
       `/version-updates?${params.toString()}`,
+      versionUpdatesResponseSchema,
     )
 
     return response.items
@@ -143,7 +141,9 @@ export async function getVersionUpdates(topicIds?: string[]) {
   }
 }
 
-export async function getIncidents(topicIds?: string[]) {
+export async function getIncidents(
+  topicIds?: string[],
+): Promise<IncidentDto[]> {
   const params = new URLSearchParams()
 
   if (topicIds?.length === 1) {
@@ -153,8 +153,9 @@ export async function getIncidents(topicIds?: string[]) {
   params.set("limit", "30")
 
   try {
-    const response = await apiFetch<{ items: Incident[] }>(
+    const response = await apiFetch(
       `/incidents?${params.toString()}`,
+      incidentsResponseSchema,
     )
 
     return response.items
@@ -164,7 +165,7 @@ export async function getIncidents(topicIds?: string[]) {
   }
 }
 
-export async function getStoryById(storyId: string): Promise<Story> {
+export async function getStoryById(storyId: string): Promise<StoryDto> {
   try {
     const response = await fetch(`${apiBaseUrl}/stories/${storyId}`, {
       cache: "no-store",
@@ -179,7 +180,7 @@ export async function getStoryById(storyId: string): Promise<Story> {
       throw new Error(`Failed to fetch story ${storyId}: ${response.status}`)
     }
 
-    const payload = (await response.json()) as { item: Story }
+    const payload = storyResponseSchema.parse(await response.json())
     return payload.item
   } catch (error) {
     logApiFallback(`/stories/${storyId}`, error)
@@ -196,7 +197,7 @@ export async function getStoryById(storyId: string): Promise<Story> {
   }
 }
 
-export function searchStories(stories: Story[], query: string) {
+export function searchStories(stories: StoryDto[], query: string) {
   const normalizedQuery = query.trim().toLowerCase()
 
   if (!normalizedQuery) {

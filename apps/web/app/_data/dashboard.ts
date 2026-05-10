@@ -1,88 +1,22 @@
-export type Topic = {
-  id: string
-  label: string
-  active?: boolean
-}
+import type {
+  IncidentDto,
+  NavItemDto,
+  StoryDto,
+  TopicDto,
+  TrackableTechnologyDto,
+  TrendMetricDto,
+  VersionUpdateDto,
+  WatchlistItemDto,
+} from "@tech-focus/shared"
 
-export type NavItem = {
-  id: string
-  label: string
-  href: string
-}
-
-export type TrendMetric = {
-  label: string
-  value: string
-  tone: string
-}
-
-export type Story = {
-  id: string
-  likes_count: number
-  kind: "アップデート" | "インシデント" | "トレンド"
-  topicIds: string[]
-  category: string
-  title: string
-  summary: string
-  source: string
-  time: string
-  whyItMatters: string
-  details: {
-    overview: string
-    keyPoints: string[]
-    timeline: string[]
-    relatedLinks: Array<{
-      label: string
-      url: string
-    }>
-  }
-}
-
-export type VersionUpdate = {
-  id: string
-  topic: string
-  sourceType: "github_release"
-  sourceName: string
-  sourceUrl: string
-  externalId: string
-  title: string
-  version: string
-  rawContent: string
-  publishedAt: string
-  category: "update"
-  importance: number
-}
-
-export type Incident = {
-  id: string
-  topic: string
-  sourceType: "github_advisory"
-  sourceName: string
-  sourceUrl: string
-  externalId: string
-  title: string
-  rawContent: string
-  severity: string
-  packageName: string | null
-  publishedAt: string
-  category: "incident"
-  importance: number
-}
-
-export type WatchlistItem = {
-  label: string
-  value: string
-  tone: string
-}
-
-export type TrackableTechnology = {
-  id: string
-  name: string
-  group: "言語" | "フレームワーク" | "ライブラリ" | "ツール"
-  category: string
-  description: string
-  selected?: boolean
-}
+export type Topic = TopicDto
+export type NavItem = NavItemDto
+export type TrendMetric = TrendMetricDto
+export type Story = StoryDto
+export type VersionUpdate = VersionUpdateDto
+export type Incident = IncidentDto
+export type WatchlistItem = WatchlistItemDto
+export type TrackableTechnology = TrackableTechnologyDto
 
 export const navItems: NavItem[] = [
   { id: "dashboard", label: "ホーム", href: "/" },

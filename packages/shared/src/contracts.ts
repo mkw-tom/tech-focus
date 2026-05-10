@@ -1,6 +1,11 @@
 import { z } from "zod"
 
 const isoDateTimeSchema = z.string().datetime({ offset: true })
+export const trendTechValues = ["react", "typescript", "hono"] as const
+export const trendSourceValues = ["hn", "github", "qiita"] as const
+export const trendTechSchema = z.enum(trendTechValues)
+export const trendSourceSchema = z.enum(trendSourceValues)
+export const trendListSourceSchema = z.enum(["hn", "github"])
 
 export const topicDtoSchema = z.object({
   id: z.string(),
@@ -92,6 +97,21 @@ export const incidentDtoSchema = z.object({
   updatedAt: isoDateTimeSchema,
 })
 
+export const trendItemDtoSchema = z.object({
+  id: z.string(),
+  source: trendSourceSchema,
+  tech: trendTechSchema,
+  title: z.string(),
+  url: z.string().url(),
+  publishedAt: isoDateTimeSchema,
+  score: z.number(),
+  author: z.string().optional(),
+  summary: z.string().optional(),
+  rawText: z.string().optional(),
+  externalId: z.string(),
+  fetchedAt: isoDateTimeSchema,
+})
+
 export const dashboardDataDtoSchema = z.object({
   navItems: z.array(navItemDtoSchema),
   topicFilters: z.array(topicDtoSchema),
@@ -131,6 +151,21 @@ export const incidentsResponseSchema = z.object({
   items: z.array(incidentDtoSchema),
 })
 
+export const trendItemsResponseSchema = z.object({
+  items: z.array(trendItemDtoSchema),
+})
+
+export const trendItemsQuerySchema = z.object({
+  tech: trendTechSchema,
+  source: trendListSourceSchema.optional(),
+  limit: z.coerce.number().int().positive().max(100).optional(),
+})
+
+export const trendItemsByTechResponseSchema = z.object({
+  tech: trendTechSchema,
+  items: z.array(trendItemDtoSchema),
+})
+
 export const versionSyncTopicSummarySchema = z.object({
   fetched: z.number().int().nonnegative(),
   saved: z.number().int().nonnegative(),
@@ -149,6 +184,28 @@ export const incidentSyncSummarySchema = z.object({
   topics: z.record(z.string(), z.number().int().nonnegative()),
 })
 
+export const trendSyncSourceResultSchema = z.object({
+  source: z.enum(["hn", "github", "qiita"]),
+  tech: z.string(),
+  fetched: z.number().int().nonnegative(),
+  saved: z.number().int().nonnegative(),
+  error: z.string().optional(),
+})
+
+export const trendSyncSummarySchema = z.object({
+  fetched: z.number().int().nonnegative(),
+  deduped: z.number().int().nonnegative(),
+  saved: z.number().int().nonnegative(),
+  results: z.array(trendSyncSourceResultSchema),
+  failedSources: z.array(
+    trendSyncSourceResultSchema.pick({
+      source: true,
+      tech: true,
+      error: true,
+    }),
+  ),
+})
+
 export type TopicDto = z.infer<typeof topicDtoSchema>
 export type NavItemDto = z.infer<typeof navItemDtoSchema>
 export type TrendMetricDto = z.infer<typeof trendMetricDtoSchema>
@@ -161,6 +218,7 @@ export type StoryDetailsDto = z.infer<typeof storyDetailsDtoSchema>
 export type StoryDto = z.infer<typeof storyDtoSchema>
 export type VersionUpdateDto = z.infer<typeof versionUpdateDtoSchema>
 export type IncidentDto = z.infer<typeof incidentDtoSchema>
+export type TrendItemDto = z.infer<typeof trendItemDtoSchema>
 export type DashboardDataDto = z.infer<typeof dashboardDataDtoSchema>
 export type ListFeedQuery = z.infer<typeof listFeedQuerySchema>
 export type VersionSyncRequest = z.infer<typeof versionSyncRequestSchema>
@@ -171,8 +229,18 @@ export type VersionUpdatesResponse = z.infer<
   typeof versionUpdatesResponseSchema
 >
 export type IncidentsResponse = z.infer<typeof incidentsResponseSchema>
+export type TrendItemsResponse = z.infer<typeof trendItemsResponseSchema>
+export type TrendItemsQuery = z.infer<typeof trendItemsQuerySchema>
+export type TrendItemsByTechResponse = z.infer<
+  typeof trendItemsByTechResponseSchema
+>
 export type VersionSyncTopicSummary = z.infer<
   typeof versionSyncTopicSummarySchema
 >
 export type VersionSyncAllSummary = z.infer<typeof versionSyncAllSummarySchema>
 export type IncidentSyncSummary = z.infer<typeof incidentSyncSummarySchema>
+export type TrendSyncSourceResult = z.infer<typeof trendSyncSourceResultSchema>
+export type TrendSyncSummary = z.infer<typeof trendSyncSummarySchema>
+export type TrendTech = z.infer<typeof trendTechSchema>
+export type TrendSource = z.infer<typeof trendSourceSchema>
+export type TrendListSource = z.infer<typeof trendListSourceSchema>

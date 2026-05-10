@@ -8,6 +8,7 @@
     "typecheck": "turbo typecheck",
     "lint": "turbo lint",
     "lint:fix": "biome check --write .",
+    "db:studio": "pnpm --filter @tech-focus/api db:studio",
     "format": "turbo format",
     "format:check": "turbo format:check"
   },

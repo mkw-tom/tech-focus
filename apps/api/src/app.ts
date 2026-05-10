@@ -4,6 +4,7 @@ import { dashboardRoutes } from "./routes/dashboard-routes.js"
 import { healthRoutes } from "./routes/health-routes.js"
 import { incidentRoutes } from "./routes/incident-routes.js"
 import { storyRoutes } from "./routes/story-routes.js"
+import { trendRoutes } from "./routes/trend-routes.js"
 import { versionRoutes } from "./routes/version-routes.js"
 
 const envName = loadEnv()
@@ -23,6 +24,7 @@ export function createApp() {
   app.route("/dashboard", dashboardRoutes)
   app.route("/incidents", incidentRoutes)
   app.route("/stories", storyRoutes)
+  app.route("/trends", trendRoutes)
   app.route("/version-updates", versionRoutes)
 
   return app

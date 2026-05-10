@@ -8,6 +8,8 @@
     "start": "NODE_ENV=production node dist/index.js",
     "job:sync-incidents": "NODE_ENV=development tsx src/jobs/sync-incident-job.ts",
     "job:sync-incidents:prod": "NODE_ENV=production tsx src/jobs/sync-incident-job.ts",
+    "job:sync-trends": "NODE_ENV=development tsx src/jobs/sync-trend-items-job.ts",
+    "job:sync-trends:prod": "NODE_ENV=production tsx src/jobs/sync-trend-items-job.ts",
     "job:sync-version-updates": "NODE_ENV=development tsx src/jobs/sync-version-updates-job.ts",
     "job:sync-version-updates:prod": "NODE_ENV=production tsx src/jobs/sync-version-updates-job.ts",
     "db:generate": "prisma generate",

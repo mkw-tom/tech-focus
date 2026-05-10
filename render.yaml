@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: free
     rootDir: .
-    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @tech-focus/api exec prisma migrate deploy && pnpm --filter @tech-focus/api exec prisma generate && pnpm --filter @tech-focus/api run build
+    buildCommand: pnpm install --frozen-lockfile --prod=false && pnpm --filter @tech-focus/api exec prisma migrate deploy && pnpm --filter @tech-focus/api exec prisma generate && pnpm --filter @tech-focus/api run build
     startCommand: pnpm --filter @tech-focus/api run start
     healthCheckPath: /health
     envVars:
@@ -22,8 +22,8 @@ services:
     plan: free
     rootDir: .
     schedule: "0 */6 * * *"
-    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @tech-focus/api exec prisma generate && pnpm --filter @tech-focus/api run build
-    startCommand: pnpm --filter @tech-focus/api run job:sync-version-updates:prod
+    buildCommand: pnpm install --frozen-lockfile --prod=false && pnpm --filter @tech-focus/api exec prisma generate && pnpm --filter @tech-focus/api run build
+    startCommand: node apps/api/dist/jobs/sync-version-updates-job.js
     envVars:
       - key: NODE_ENV
         value: production
@@ -39,8 +39,8 @@ services:
     plan: free
     rootDir: .
     schedule: "15 */6 * * *"
-    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @tech-focus/api exec prisma generate && pnpm --filter @tech-focus/api run build
-    startCommand: pnpm --filter @tech-focus/api run job:sync-incidents:prod
+    buildCommand: pnpm install --frozen-lockfile --prod=false && pnpm --filter @tech-focus/api exec prisma generate && pnpm --filter @tech-focus/api run build
+    startCommand: node apps/api/dist/jobs/sync-incident-job.js
     envVars:
       - key: NODE_ENV
         value: production

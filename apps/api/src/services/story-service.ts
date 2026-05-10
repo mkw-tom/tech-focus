@@ -1,3 +1,4 @@
+import type { StoryDto } from "@tech-focus/shared"
 import { storyRepository } from "../repositories/story-repository.js"
 
 const storyKindMap = {
@@ -8,7 +9,7 @@ const storyKindMap = {
 
 function toStoryPayload(
   story: Awaited<ReturnType<typeof storyRepository.findById>>,
-) {
+): StoryDto | null {
   if (!story) {
     return null
   }
@@ -37,13 +38,15 @@ function toStoryPayload(
 }
 
 export const storyService = {
-  async getStoryById(storyId: string) {
+  async getStoryById(storyId: string): Promise<StoryDto | null> {
     const story = await storyRepository.findById(storyId)
     return toStoryPayload(story)
   },
 
-  async listStories() {
+  async listStories(): Promise<StoryDto[]> {
     const stories = await storyRepository.findMany()
-    return stories.map((story) => toStoryPayload(story))
+    return stories
+      .map((story) => toStoryPayload(story))
+      .filter((story): story is StoryDto => story !== null)
   },
 }

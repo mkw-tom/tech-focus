@@ -1,3 +1,7 @@
+import type {
+  DashboardDataDto,
+  TrackableTechnologyDto,
+} from "@tech-focus/shared"
 import {
   briefingPoints as snapshotBriefingPoints,
   marketPulse as snapshotMarketPulse,
@@ -17,7 +21,7 @@ const technologyGroupMap = {
   TOOL: "ツール",
 } as const
 
-export function getSnapshotDashboardPayload() {
+export function getSnapshotDashboardPayload(): DashboardDataDto {
   return {
     navItems: snapshotNavItems,
     topicFilters: snapshotTopicFilters,
@@ -30,7 +34,7 @@ export function getSnapshotDashboardPayload() {
 }
 
 export const dashboardService = {
-  async getDashboardPayload() {
+  async getDashboardPayload(): Promise<DashboardDataDto> {
     const [
       navItems,
       topicFilters,
@@ -85,7 +89,7 @@ export const dashboardService = {
     }
   },
 
-  async listTechnologies() {
+  async listTechnologies(): Promise<TrackableTechnologyDto[]> {
     const technologies = await dashboardRepository.findTechnologies()
 
     return technologies.map((item) => ({

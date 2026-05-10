@@ -4,9 +4,43 @@ services:
     runtime: node
     plan: free
     rootDir: .
-    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @tech-focus/api exec prisma generate && pnpm --filter @tech-focus/api run build
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @tech-focus/api exec prisma migrate deploy && pnpm --filter @tech-focus/api exec prisma generate && pnpm --filter @tech-focus/api run build
     startCommand: pnpm --filter @tech-focus/api run start
     healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+  - type: cron
+    name: tech-focus-sync-version-updates
+    runtime: node
+    plan: free
+    rootDir: .
+    schedule: "0 */6 * * *"
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @tech-focus/api exec prisma generate && pnpm --filter @tech-focus/api run build
+    startCommand: pnpm --filter @tech-focus/api run job:sync-version-updates:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+  - type: cron
+    name: tech-focus-sync-incidents
+    runtime: node
+    plan: free
+    rootDir: .
+    schedule: "15 */6 * * *"
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @tech-focus/api exec prisma generate && pnpm --filter @tech-focus/api run build
+    startCommand: pnpm --filter @tech-focus/api run job:sync-incidents:prod
     envVars:
       - key: NODE_ENV
         value: production

@@ -4,6 +4,7 @@ import type {
   StoryDto,
   TopicDto,
   TrackableTechnologyDto,
+  TrendItemDto,
   TrendMetricDto,
   VersionUpdateDto,
   WatchlistItemDto,
@@ -13,6 +14,7 @@ export type Topic = TopicDto
 export type NavItem = NavItemDto
 export type TrendMetric = TrendMetricDto
 export type Story = StoryDto
+export type TrendItem = TrendItemDto
 export type VersionUpdate = VersionUpdateDto
 export type Incident = IncidentDto
 export type WatchlistItem = WatchlistItemDto

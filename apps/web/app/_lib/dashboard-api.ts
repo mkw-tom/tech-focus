@@ -4,11 +4,14 @@ import {
   type DashboardDataDto,
   type IncidentDto,
   type StoryDto,
+  type TrendItemDto,
   type VersionUpdateDto,
   dashboardDataDtoSchema,
   incidentsResponseSchema,
   storiesResponseSchema,
   storyResponseSchema,
+  trendItemsByTechResponseSchema,
+  trendTechValues,
   versionUpdatesResponseSchema,
 } from "@tech-focus/shared"
 import { notFound } from "next/navigation"
@@ -161,6 +164,40 @@ export async function getIncidents(
     return response.items
   } catch (error) {
     logApiFallback("/incidents", error)
+    return []
+  }
+}
+
+export async function getTrends(topicIds?: string[]): Promise<TrendItemDto[]> {
+  const supportedTopics = (
+    topicIds?.length ? topicIds : trendTechValues
+  ).filter((topicId): topicId is (typeof trendTechValues)[number] =>
+    trendTechValues.includes(topicId as (typeof trendTechValues)[number]),
+  )
+
+  if (supportedTopics.length === 0) {
+    return []
+  }
+
+  try {
+    const responses = await Promise.all(
+      supportedTopics.map((tech) =>
+        apiFetch(
+          `/trends?${new URLSearchParams({ tech, limit: "20" }).toString()}`,
+          trendItemsByTechResponseSchema,
+        ),
+      ),
+    )
+
+    return responses
+      .flatMap((response) => response.items)
+      .sort(
+        (left, right) =>
+          new Date(right.publishedAt).getTime() -
+          new Date(left.publishedAt).getTime(),
+      )
+  } catch (error) {
+    logApiFallback("/trends", error)
     return []
   }
 }

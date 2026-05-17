@@ -3,13 +3,11 @@
 import { useMemo, useState } from "react"
 import { IncidentCard } from "../../_components/incident-card"
 import { StoryCard } from "../../_components/story-card"
-import { TrendItemCard } from "../../_components/trend-item-card"
 import { VersionUpdateCard } from "../../_components/version-update-card"
 import type {
   Incident,
   Story,
   TrackableTechnology,
-  TrendItem,
   VersionUpdate,
 } from "../../_data/dashboard"
 
@@ -17,9 +15,8 @@ type ArticleTypeFeedProps = {
   defaultTopicIds: string[]
   incidents: Incident[]
   stories: Story[]
-  trends: TrendItem[]
   trackedTopics: TrackableTechnology[]
-  type: "update" | "incident" | "trend"
+  type: "update" | "incident"
   versionUpdates: VersionUpdate[]
 }
 
@@ -27,7 +24,6 @@ export function ArticleTypeFeed({
   defaultTopicIds,
   incidents,
   stories,
-  trends,
   trackedTopics,
   type,
   versionUpdates,
@@ -51,9 +47,6 @@ export function ArticleTypeFeed({
   const filteredIncidents = useMemo(() => {
     return incidents.filter((item) => selectedTopicIds.includes(item.topic))
   }, [incidents, selectedTopicIds])
-  const filteredTrends = useMemo(() => {
-    return trends.filter((item) => selectedTopicIds.includes(item.tech))
-  }, [selectedTopicIds, trends])
 
   const toggleTopic = (topicId: string) => {
     if (selectedTopicIds.length === 1 && selectedTopicIds.includes(topicId)) {
@@ -123,25 +116,6 @@ export function ArticleTypeFeed({
           ) : (
             <div className="rounded-[1.5rem] border border-dashed border-base-300 bg-base-200/40 p-8 text-center text-sm text-base-content/60">
               条件に一致する incident がありません。topic
-              の選択を変更してください。
-            </div>
-          )
-        ) : type === "trend" ? (
-          filteredTrends.length > 0 ? (
-            <div className="space-y-4">
-              <div className="space-y-4">
-                {filteredTrends.map((item) => (
-                  <TrendItemCard
-                    key={`${item.source}-${item.externalId}`}
-                    item={item}
-                    trackedTopics={trackedTopics}
-                  />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="rounded-[1.5rem] border border-dashed border-base-300 bg-base-200/40 p-8 text-center text-sm text-base-content/60">
-              条件に一致する trend がありません。topic
               の選択を変更してください。
             </div>
           )

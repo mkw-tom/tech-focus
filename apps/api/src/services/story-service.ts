@@ -10,7 +10,7 @@ const storyKindMap = {
 function toStoryPayload(
   story: Awaited<ReturnType<typeof storyRepository.findById>>,
 ): StoryDto | null {
-  if (!story) {
+  if (!story || story.kind === "TREND") {
     return null
   }
 

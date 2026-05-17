@@ -30,7 +30,6 @@ export const navItems: NavItem[] = [
 export const topicFilters: Topic[] = [
   { id: "update", label: "アップデート", active: true },
   { id: "incident", label: "インシデント" },
-  { id: "trend", label: "トレンド" },
 ]
 
 export const topStories: Story[] = [
@@ -97,39 +96,6 @@ export const topStories: Story[] = [
       relatedLinks: [
         { label: "Ops review", url: "https://example.com/ops-review" },
         { label: "Case study", url: "https://example.com/case-study" },
-      ],
-    },
-  },
-  {
-    id: "explainable-operational-feeds",
-    likes_count: 87,
-    kind: "トレンド",
-    topicIds: ["typescript", "biome", "tailwindcss"],
-    category: "Infra",
-    title:
-      "Why teams are moving from dashboards to explainable operational feeds",
-    summary:
-      "数値の監視だけではなく、変化の背景まで文章化して流すプロダクトが増えている。",
-    source: "Infra Watch",
-    time: "35 min ago",
-    whyItMatters:
-      "ダッシュボード中心の監視体験から、説明可能なフィードへの移行が進んでいます。",
-    details: {
-      overview:
-        "監視や可観測性の文脈でも、グラフ中心のダッシュボードより『何が起きて、なぜ注目すべきか』を文章化したフィード型 UI が増えています。変化そのものより、変化の背景説明が価値になる流れです。",
-      keyPoints: [
-        "数値の異常検知だけではなく、背景説明を付与するフィードが運用負荷を下げている。",
-        "チーム横断では、生データよりも意図付きの要約の方が共有しやすい。",
-        "フロントエンド側もカード、スレッド、説明文の設計が重要になっている。",
-      ],
-      timeline: [
-        "09:00 可観測性ベンダーの新機能発表",
-        "12:10 フィード型運用 UI の分析記事が公開",
-        "14:40 開発者コミュニティで実装事例が共有",
-      ],
-      relatedLinks: [
-        { label: "Feature announcement", url: "https://example.com/feature" },
-        { label: "Community notes", url: "https://example.com/community" },
       ],
     },
   },

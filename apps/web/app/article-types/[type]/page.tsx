@@ -5,7 +5,6 @@ import { InfoCard } from "../../_components/info-card"
 import {
   getDashboardData,
   getIncidents,
-  getTrends,
   getVersionUpdates,
 } from "../../_lib/dashboard-api"
 import { ArticleTypeFeed } from "./article-type-feed"
@@ -13,7 +12,6 @@ import { ArticleTypeFeed } from "./article-type-feed"
 const articleTypeMap = {
   update: "アップデート",
   incident: "インシデント",
-  trend: "トレンド",
 } as const
 
 type ArticleTypePageProps = {
@@ -48,8 +46,6 @@ export default async function ArticleTypePage({
   ).map((item) => item.id)
   const incidents =
     selectedType === "インシデント" ? await getIncidents(defaultTopicIds) : []
-  const trends =
-    selectedType === "トレンド" ? await getTrends(defaultTopicIds) : []
   const versionUpdates =
     selectedType === "アップデート"
       ? await getVersionUpdates(defaultTopicIds)
@@ -85,9 +81,8 @@ export default async function ArticleTypePage({
           defaultTopicIds={defaultTopicIds}
           incidents={incidents}
           stories={stories}
-          trends={trends}
           trackedTopics={dashboard.trackableTechnologies}
-          type={type as "update" | "incident" | "trend"}
+          type={type as "update" | "incident"}
           versionUpdates={versionUpdates}
         />
 

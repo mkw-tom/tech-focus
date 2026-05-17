@@ -24,7 +24,7 @@ const technologyGroupMap = {
 export function getSnapshotDashboardPayload(): DashboardDataDto {
   return {
     navItems: snapshotNavItems,
-    topicFilters: snapshotTopicFilters,
+    topicFilters: snapshotTopicFilters.filter((item) => item.id !== "trend"),
     marketPulse: snapshotMarketPulse,
     briefingPoints: snapshotBriefingPoints,
     watchlistItems: snapshotWatchlistItems,
@@ -57,11 +57,13 @@ export const dashboardService = {
         label: item.label,
         href: item.href,
       })),
-      topicFilters: topicFilters.map((item) => ({
-        id: item.id,
-        label: item.label,
-        active: item.isActive,
-      })),
+      topicFilters: topicFilters
+        .filter((item) => item.id !== "trend")
+        .map((item) => ({
+          id: item.id,
+          label: item.label,
+          active: item.isActive,
+        })),
       marketPulse: dashboardMetrics
         .filter((item) => item.kind === "MARKET_PULSE")
         .map((item) => ({
@@ -85,7 +87,7 @@ export const dashboardService = {
         description: item.description,
         selected: item.isTracked,
       })),
-      topStories,
+      topStories: topStories.filter((story) => story.kind !== "トレンド"),
     }
   },
 

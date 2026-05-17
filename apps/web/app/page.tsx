@@ -6,7 +6,6 @@ import { SearchHeader } from "./_components/search-header"
 import {
   getDashboardData,
   getIncidents,
-  getTrends,
   getVersionUpdates,
 } from "./_lib/dashboard-api"
 
@@ -16,7 +15,6 @@ export default async function HomePage() {
     .filter((item) => item.selected)
     .map((item) => item.id)
   const incidents = await getIncidents(defaultHomeTopicIds)
-  const trends = await getTrends(defaultHomeTopicIds)
   const versionUpdates = await getVersionUpdates(defaultHomeTopicIds)
 
   return (
@@ -36,7 +34,6 @@ export default async function HomePage() {
           trackedTopics={dashboard.trackableTechnologies}
           defaultTopicIds={defaultHomeTopicIds}
           incidents={incidents}
-          trends={trends}
           versionUpdates={versionUpdates}
         />
       </div>

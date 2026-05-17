@@ -6,13 +6,11 @@ import type {
   Story,
   Topic,
   TrackableTechnology,
-  TrendItem,
   VersionUpdate,
 } from "../_data/dashboard"
 import { IncidentCard } from "./incident-card"
 import { StoryCard } from "./story-card"
 import { TopicFilterBar } from "./topic-filter-bar"
-import { TrendItemCard } from "./trend-item-card"
 import { VersionUpdateCard } from "./version-update-card"
 
 type HomeFeedProps = {
@@ -21,7 +19,6 @@ type HomeFeedProps = {
   trackedTopics: TrackableTechnology[]
   defaultTopicIds: string[]
   incidents: Incident[]
-  trends: TrendItem[]
   versionUpdates: VersionUpdate[]
 }
 
@@ -31,7 +28,6 @@ export function HomeFeed({
   trackedTopics,
   defaultTopicIds,
   incidents,
-  trends,
   versionUpdates,
 }: HomeFeedProps) {
   const [selectedType, setSelectedType] = useState(typeFilters[0]?.label ?? "")
@@ -58,9 +54,6 @@ export function HomeFeed({
   const filteredIncidents = useMemo(() => {
     return incidents.filter((item) => selectedTopicIds.includes(item.topic))
   }, [incidents, selectedTopicIds])
-  const filteredTrends = useMemo(() => {
-    return trends.filter((item) => selectedTopicIds.includes(item.tech))
-  }, [selectedTopicIds, trends])
 
   const toggleTopic = (topicId: string) => {
     if (selectedTopicIds.length === 1 && selectedTopicIds.includes(topicId)) {
@@ -181,51 +174,14 @@ export function HomeFeed({
           </div>
         )}
 
-        {selectedType === "トレンド" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm uppercase tracking-[0.24em] text-success/80">
-                  Trends
-                </p>
-                <h2 className="mt-2 text-xl font-bold">
-                  Hacker News / GitHub から取得した技術トレンド
-                </h2>
-              </div>
-              <span className="text-sm text-base-content/50">
-                {filteredTrends.length} items
-              </span>
-            </div>
-
-            {filteredTrends.length > 0 ? (
-              <div className="space-y-4">
-                {filteredTrends.map((item) => (
-                  <TrendItemCard
-                    key={`${item.source}-${item.externalId}`}
-                    item={item}
-                    trackedTopics={trackedTopics}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="rounded-[1.5rem] border border-dashed border-base-300 bg-base-200/40 p-8 text-center text-sm text-base-content/60">
-                まだ trend が同期されていません。job
-                実行後にここへ表示されます。
-              </div>
-            )}
-          </div>
-        )}
-
         {selectedType !== "アップデート" &&
         selectedType !== "インシデント" &&
-        selectedType !== "トレンド" &&
         filteredStories.length > 0 ? (
           filteredStories.map((story) => (
             <StoryCard key={`${story.kind}-${story.title}`} story={story} />
           ))
         ) : selectedType !== "アップデート" &&
-          selectedType !== "インシデント" &&
-          selectedType !== "トレンド" ? (
+          selectedType !== "インシデント" ? (
           <div className="rounded-[1.5rem] border border-dashed border-base-300 bg-base-200/40 p-8 text-center text-sm text-base-content/60">
             条件に一致する記事がありません。記事の種類かトピック選択を変更してください。
           </div>

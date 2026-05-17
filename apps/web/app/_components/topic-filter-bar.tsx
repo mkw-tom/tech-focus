@@ -1,4 +1,3 @@
-import { FaArrowTrendUp } from "react-icons/fa6"
 import { GrUpdate } from "react-icons/gr"
 import { MdOutlineTroubleshoot } from "react-icons/md"
 import type { Topic } from "../_data/dashboard"
@@ -20,8 +19,6 @@ export function TopicFilterBar({
         return <GrUpdate className="text-sm" />
       case "インシデント":
         return <MdOutlineTroubleshoot className="text-[18px]" />
-      case "トレンド":
-        return <FaArrowTrendUp className="text-[18px]" />
       default:
         return null
     }

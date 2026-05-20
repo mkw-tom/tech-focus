@@ -1,21 +1,21 @@
-# Japanese Briefing Patterns
+# 日本語ブリーフィングのパターン
 
-Prefer this shape for release interpretation.
+release 解釈では、基本的に次の形を優先する。
 
-## Briefing Template
+## ブリーフィングテンプレート
 
 - 何が変わったか
 - 実務への影響
 - 対応が必要か
 - 今回は様子見でよいか
 
-## Style
+## スタイル
 
-- Keep it concise and technical.
-- Preserve English API names and package names.
-- Prefer `移行が必要`, `影響は限定的`, `追従優先度は高い` over literal translations of release prose.
+- 簡潔で技術的な文体を保つ。
+- API 名や package 名の英語表記は維持する。
+- release 本文の直訳より、`移行が必要`, `影響は限定的`, `追従優先度は高い` のような実務判断につながる表現を優先する。
 
-## Example Phrasing
+## 表現例
 
 - `既存実装に影響する breaking change が含まれます。`
 - `今すぐの移行は必須ではありませんが、次回更新前に検証したい変更です。`

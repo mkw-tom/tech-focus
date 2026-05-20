@@ -1,8 +1,8 @@
-# Contract Checklist
+# Contract 確認項目
 
-- Is this shape shared across app boundaries?
-- Does runtime validation belong at the boundary?
-- Should this field be an enum instead of a string?
-- Does the frontend parse the same payload the backend returns?
-- Can an existing schema be extended instead of creating a near-duplicate?
-- Are inferred types exported alongside the schema?
+- この shape は app 境界をまたいで共有されるか。
+- runtime validation はその境界に置くべきか。
+- この field は string ではなく enum にするべきか。
+- frontend は backend が返す payload と同じものを parse しているか。
+- 近い重複 schema を新設するより、既存 schema を拡張できないか。
+- schema と一緒に inferred type も export しているか。

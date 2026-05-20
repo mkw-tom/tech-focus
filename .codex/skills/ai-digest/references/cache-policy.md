@@ -1,7 +1,7 @@
-# Digest Cache Policy
+# ダイジェストのキャッシュ方針
 
-- Digest is derived data from persisted raw source content.
-- Cache key should be stable per source item and source revision.
-- Recompute only when raw source content changes or the stored digest version is invalidated.
-- Prefer DB persistence over in-memory or request-local caching for product behavior.
-- Services should own cache lookup and write-back behavior.
+- ダイジェストは、永続化済み raw source content から導出される派生データとして扱う。
+- cache key は source item と source revision ごとに安定する形にする。
+- raw source content が変わったとき、または保存済み digest version を無効化したときだけ再計算する。
+- プロダクト挙動としては、in-memory や request-local cache より DB 永続化を優先する。
+- cache の参照と write-back の責務は service に持たせる。

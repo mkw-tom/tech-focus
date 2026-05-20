@@ -1,25 +1,25 @@
-# Digest Style Guide
+# ダイジェストのスタイルガイド
 
-## Voice
+## 文体
 
-- Japanese, concise, engineering-first
-- Clear enough for a developer scanning updates quickly
-- Avoid blog-like openings and generic AI phrasing
+- 日本語で、簡潔に、エンジニア視点を優先する
+- 更新を流し見する開発者がすぐ理解できる明瞭さを保つ
+- ブログ調の書き出しや汎用的な AI っぽい言い回しは避ける
 
-## Priorities
+## 優先順位
 
-- Engineering impact
-- Required action
-- Risk and migration cost
-- Relevance to selected technologies
+- 実務への影響
+- 必要な対応
+- リスクと移行コスト
+- 監視対象技術との関連度
 
-## Avoid
+## 避けること
 
-- Literal sentence-by-sentence translation
-- Empty phrases like `注目です` without reason
-- Repeating source text without interpretation
+- 一文ごとの直訳
+- 理由のない `注目です` のような空疎な表現
+- 解釈のないままソース本文を言い換えて繰り返すこと
 
-## Preferred Expressions
+## 推奨表現
 
 - `実務上の影響は限定的です`
 - `既存実装に影響する可能性があります`

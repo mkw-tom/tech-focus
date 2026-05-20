@@ -1,4 +1,4 @@
-# Release Digest Example
+# リリースダイジェスト例
 
 ## 何が変わったか
 

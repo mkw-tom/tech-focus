@@ -1,30 +1,30 @@
-# Release Severity Rules
+# Release の severity ルール
 
-Use these rules to classify importance for engineering briefings.
+エンジニア向けブリーフィングの重要度を分類するときは、このルールを使う。
 
 ## High
 
-- Explicit breaking changes
-- Required migration for existing users
-- Runtime compatibility changes
-- Security-sensitive release notes
-- Removal or deprecation with immediate engineering cost
+- 明示的な breaking change
+- 既存利用者に必須の移行対応
+- runtime compatibility の変更
+- security 的に重要な release note
+- 直近で工数影響が出る removal や deprecation
 
 ## Medium
 
-- New capabilities that materially affect architecture or DX
-- Important bug fixes for common workflows
-- New official support for runtimes, frameworks, or deployment targets
-- Deprecations without immediate breakage but with clear future impact
+- アーキテクチャや DX に実質影響する新機能
+- 一般的な workflow に効く重要な bug fix
+- runtime、framework、deployment target への新しい公式対応
+- いますぐ壊れはしないが将来影響が明確な deprecation
 
 ## Low
 
-- Minor fixes with narrow scope
-- Internal maintenance with little user-facing impact
-- Documentation-only or housekeeping releases unless they reveal strategic direction
+- 影響範囲の狭い小さな修正
+- 利用者影響がほぼない内部保守
+- 戦略的な方向性が読み取れない限り、documentation のみや housekeeping 中心の release
 
-## Additional Heuristics
+## 追加ヒューリスティクス
 
-- Raise severity when the tracked technology is core to app runtime, build, deployment, or typing.
-- Lower severity when the release is optional, additive, or narrowly scoped.
-- If the release signals ecosystem direction without immediate action, keep importance separate from urgency.
+- 追跡対象技術が app runtime、build、deployment、typing の中核なら severity を上げる。
+- release が任意導入、追加機能、狭い範囲向けなら severity を下げる。
+- すぐ行動は不要でも ecosystem の方向性を示す release は、importance と urgency を分けて扱う。

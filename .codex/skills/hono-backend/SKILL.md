@@ -1,43 +1,43 @@
 ---
 name: hono-backend
-description: Standardize Hono backend architecture for this repo. Use when adding or refactoring routes, services, repositories, fetchers, or jobs in apps/api. Enforces thin routes, service-owned business logic, repository-owned DB logic, fetcher-owned external access, and shared Zod contracts.
+description: このリポジトリの Hono バックエンド構成を標準化するためのスキル。`apps/api` の route、service、repository、fetcher、job を追加・整理するときに使う。薄い route、service に置く business logic、repository に閉じた DB logic、fetcher に限定した外部アクセス、共有 Zod contract を徹底する。
 ---
 
-# Hono Backend
+# Hono バックエンド
 
-Use this skill for backend architectural decisions in `apps/api`.
+`apps/api` のバックエンド設計判断ではこのスキルを使う。
 
-## Layer Rules
+## レイヤールール
 
-- Routes: parse input, call service, return validated output
-- Services: business logic and orchestration
-- Repositories: Prisma and DB queries only
-- Fetchers: external API access only
-- Jobs: scheduled workflows only
+- Routes: 入力を解釈し、service を呼び、検証済みの出力を返す
+- Services: business logic と orchestration を持つ
+- Repositories: Prisma と DB query のみに限定する
+- Fetchers: 外部 API アクセスのみに限定する
+- Jobs: 定期実行ワークフローのみに限定する
 
-## Required Practices
+## 必須プラクティス
 
-- Parse request/query input with shared Zod schemas where possible.
-- Validate response payloads against shared contracts.
-- Keep route handlers short and boring.
-- Put cross-source orchestration in services, not repositories.
-- Follow the existing `routes -> services -> repositories/fetchers/jobs` split already used in `apps/api`.
+- request / query 入力は可能な限り shared Zod schema で parse する。
+- response payload は shared contract で検証する。
+- route handler は短く単純に保つ。
+- 複数ソースをまたぐ orchestration は repository ではなく service に置く。
+- `apps/api` で使っている `routes -> services -> repositories/fetchers/jobs` の分割に従う。
 
-## Avoid
+## 避けること
 
-- Business logic in routes
-- Duplicated API types local to `apps/api` and `apps/web`
-- Fetching external APIs directly from routes
-- Repositories deciding product wording or digest output
+- route に business logic を置くこと
+- `apps/api` と `apps/web` に API type を重複定義すること
+- route から外部 API を直接取得すること
+- repository に product wording や digest 出力判断を持たせること
 
-## Workflow
+## ワークフロー
 
-1. Start from the contract in `packages/shared`.
-2. Add or update route parsing and response validation.
-3. Move decision-making into service functions.
-4. Keep persistence focused in repositories.
-5. Add fetchers or jobs only when the use case requires external sync.
+1. `packages/shared` の contract から始める。
+2. route の parse と response validation を追加・更新する。
+3. 判断ロジックは service function に寄せる。
+4. 永続化は repository に集中させる。
+5. 外部同期が必要なユースケースにだけ fetcher や job を追加する。
 
-## Load These References When Needed
+## 必要に応じて読む参照
 
-- Backend boundary checklist: `references/backend-boundaries.md`
+- バックエンド責務境界チェック: `references/backend-boundaries.md`

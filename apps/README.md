@@ -62,20 +62,6 @@
 
 ---
 
-### 📈 Trend Detection（トレンド検知）
-開発者コミュニティでの盛り上がりを検知
-
-**Data Sources**
-- Qiita API  
-  - https://qiita.com/api/v2/items
-- GitHub Trending（補助的に利用）
-
-**指標**
-- likes / stocks（Qiita）
-- star増加（GitHub）
-
----
-
 ## 🧠 Design Philosophy
 
 このプロダクトは以下の思想で設計されています：

@@ -1,34 +1,62 @@
-# tech-focus
+# 🧠 Tech Briefing AI
 
-Turborepo + pnpm を使った monorepo の雛形です。
+- GitHub Releases や Incident 情報を収集し、
+AI によって実務向けのエンジニアリングブリーフィングへ変換しようというプロジェクトです🧑‍💻
 
-## 構成
 
-- `apps/web`: Next.js アプリ
-- `apps/api`: Node.js + Hono API
+<br>
+<br>
 
-## セットアップ
+# 🚀 主な機能
 
-```bash
-pnpm install
-pnpm dev
-```
+## 📦 アップデート監視
+- GitHub Releases から特定の技術バージョン更新を収集・保存。⇨ スレッド形式で表示し、AIによって解釈させる。
+- 将来的に蓄積したデータをRAGで学習させ、最新動向と予測ができるような仕組みを目指す。
 
-## 開発コマンド
+## 🚨 インシデント監視
+- security advisory や ecosystem incident を監視
 
-```bash
-pnpm dev
-pnpm build
-pnpm lint
-pnpm format
-pnpm typecheck
-```
+## ✨ AI Digest
 
-## Docker 開発環境
+収集したトレンド情報やインシデント上ほを元に、
+実務向けの日本語ダイジェストを生成。
 
-```bash
-docker compose up --build
-```
+<br>
+<br>
 
-- Web: `http://localhost:3000`
-- API: `http://localhost:8787`
+# 🏗️ アーキテクチャ
+
+## Frontend
+- Next.js
+- React
+- TypeScript
+
+## Backend
+- TypeScript
+- Hono
+
+## Database
+- Prisma
+- NeonDB
+
+## Authentication
+- NeonAuth
+
+## LLM
+- OpenAI API
+
+## Other
+- turborepo
+- zod
+
+<br>
+<br>
+
+
+# 🎯 このプロジェクトが目指すもの
+
+✅ technical monitoring assistant  
+✅ engineering briefing system  
+✅ 実務向け技術変化解釈レイヤー  
+
+を目指している。

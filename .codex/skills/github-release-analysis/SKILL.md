@@ -1,65 +1,65 @@
 ---
 name: github-release-analysis
-description: Analyze GitHub Releases for selected technologies in this repo, determine engineering impact, detect breaking changes and migration work, classify importance, and produce practical Japanese release briefings. Use when implementing or refining release analysis, release digestion, severity rules, or DB-backed release interpretation flows.
+description: このリポジトリで追跡している技術の GitHub Releases を分析し、実務影響、breaking change、移行対応、重要度を判断して、日本語の実践的なリリースブリーフィングを作るためのスキル。release 分析、digest 化、severity ルール、DB-backed な release 解釈フローを実装・改善するときに使う。
 ---
 
-# GitHub Release Analysis
+# GitHub Release 分析
 
-Use this skill when the task involves GitHub Releases as a product signal, not generic news summarization.
+GitHub Releases をプロダクト上の重要シグナルとして扱うタスクで使う。一般的なニュース要約用途では使わない。
 
-## Current Repo State
+## 現在のリポジトリ状況
 
-- Raw GitHub Releases are fetched and normalized in `apps/api/src/services/version/`.
-- Persisted release data currently includes raw content, version, source metadata, and numeric `importance`.
-- Importance is currently computed heuristically during normalization, not by an AI digest pipeline.
-- Japanese release digest persistence is not implemented yet.
+- raw GitHub Releases の取得と正規化は `apps/api/src/services/version/` にある。
+- 現在保存している release data には、raw content、version、source metadata、数値の `importance` が含まれる。
+- `importance` は AI ダイジェストではなく、正規化時の heuristic で計算している。
+- 日本語リリースダイジェストの永続化はまだ未実装。
 
-## Goals
+## 目的
 
-- Parse release content into engineering-relevant facts.
-- Detect breaking changes, migration work, and ecosystem direction.
-- Classify practical importance for engineers tracking selected technologies.
-- When the product adds it, generate concise Japanese briefings that explain impact, not just summarize text.
+- release 本文から実務に関係する事実を抽出する。
+- breaking change、移行作業、エコシステムの方向性を検出する。
+- 対象技術を追うエンジニアにとっての実用的な重要度を分類する。
+- プロダクトに追加する場合は、本文の要約ではなく影響を説明する簡潔な日本語ブリーフィングを作る。
 
-## Workflow
+## ワークフロー
 
-1. Identify the source release payload and the persisted shape already used by `apps/api`.
-2. Separate raw release facts from interpreted output.
-3. Apply severity and impact rules before writing any digest.
-4. If the task includes digest generation, write Japanese output that answers:
-   - What changed?
-   - Who is affected?
-   - What action is required?
-   - Can teams defer adoption?
-5. Keep current heuristics and future AI interpretation separate unless the task explicitly unifies them.
+1. `apps/api` で使っている source release payload と既存の永続化 shape を確認する。
+2. raw release facts と解釈済み出力を分離する。
+3. ダイジェストを書く前に severity と impact のルールを適用する。
+4. タスクにダイジェスト生成が含まれるなら、次に答える日本語出力を書く。
+   - 何が変わったか
+   - 誰に影響するか
+   - どんな対応が必要か
+   - いまは見送り可能か
+5. 明示的に統合するタスクでない限り、現行 heuristic と将来の AI 解釈は分けて扱う。
 
-## Output Requirements
+## 出力要件
 
-- Preserve product and API names in their original technical form.
-- Prefer practical engineering implications over marketing wording.
-- Call out migration steps explicitly when present.
-- Distinguish clearly between:
+- 製品名や API 名は技術用語として元の表記を保つ。
+- マーケティング文言より、実務上のエンジニアリング影響を優先する。
+- 移行手順がある場合は明示する。
+- 次を明確に区別する。
   - breaking change
-  - recommended follow-up
-  - ecosystem signal
-  - optional watch item
+  - 推奨フォローアップ
+  - エコシステム上のシグナル
+  - 任意の watch 項目
 
-## Guardrails
+## ガードレール
 
-- Do not treat every release as high importance.
-- Do not infer breaking changes without textual evidence.
-- Do not over-translate technical terminology into unnatural Japanese.
-- Do not mix collection logic and digest generation in the same scheduled job.
-- Do not assume a digest table or digest cache already exists in the current schema.
+- すべての release を高重要度扱いしない。
+- テキスト根拠なしに breaking change を推測しない。
+- 技術用語を不自然な日本語へ過剰翻訳しない。
+- 同じ scheduled job の中で collection logic と digest 生成を混ぜない。
+- 現行 schema に digest table や digest cache がすでにある前提にしない。
 
-## Load These References When Needed
+## 必要に応じて読む参照
 
-- Severity and importance rules: `references/severity-rules.md`
-- Example output patterns: `references/japanese-briefing-patterns.md`
+- severity / importance ルール: `references/severity-rules.md`
+- 出力パターン例: `references/japanese-briefing-patterns.md`
 
-## Repo Fit
+## このリポジトリでの配置
 
-- Source collection belongs under `apps/api/src/services/version/`.
-- Runtime contracts belong in `packages/shared/src/contracts.ts`.
-- Current persisted release shape lives in `VersionUpdate` and shared DTOs.
-- If local scripts are needed for deterministic parsing, place them under `scripts/`.
+- source collection は `apps/api/src/services/version/` 配下に置く。
+- runtime contract は `packages/shared/src/contracts.ts` に置く。
+- 現在の永続化済み release shape は `VersionUpdate` と shared DTOs にある。
+- 決定的な parsing のために local script が必要なら `scripts/` 配下に置く。

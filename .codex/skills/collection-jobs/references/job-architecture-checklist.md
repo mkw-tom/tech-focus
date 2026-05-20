@@ -1,9 +1,9 @@
-# Job Architecture Checklist
+# Job アーキテクチャ確認項目
 
-- Define source of truth for each entity.
-- Define stable dedupe key.
-- Persist raw source content needed for later interpretation.
-- Return a sync summary with fetched, saved, and failed counts.
-- Keep job safe to rerun.
-- Keep rate-limited external access out of request/response routes.
-- If a job is put on hold, disable scheduling separately from deleting source code.
+- 各 entity の source of truth を定義する。
+- 安定した dedupe key を定義する。
+- 後段の解釈に必要な raw source content を永続化する。
+- fetched / saved / failed 件数を含む sync summary を返す。
+- job を安全に再実行できるようにする。
+- rate limit のある外部アクセスを request/response route に持ち込まない。
+- job を保留にする場合は、ソースコード削除ではなく scheduling 停止で切り分ける。

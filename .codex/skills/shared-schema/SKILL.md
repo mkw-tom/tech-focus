@@ -1,45 +1,45 @@
 ---
 name: shared-schema
-description: Standardize shared API contracts in packages/shared for this repo. Use when adding or changing request bodies, query params, response payloads, enums, source types, or runtime validation shared by Next.js frontend and Hono backend.
+description: このリポジトリの `packages/shared` に置く共有 API contract を標準化するためのスキル。Next.js フロントエンドと Hono バックエンドで共有する request body、query params、response payload、enum、source type、runtime validation を追加・変更するときに使う。
 ---
 
-# Shared Schema
+# 共有スキーマ
 
-Use this skill when frontend and backend must agree on data shape.
+frontend と backend で data shape を一致させる必要があるときに使う。
 
-## Core Rules
+## 基本ルール
 
-- Shared schemas belong in `packages/shared`.
-- Use Zod for runtime validation.
-- Frontend and backend share contracts instead of duplicating types.
-- Request bodies, query params, responses, enums, source types, and importance levels should come from shared schemas when they cross app boundaries.
+- shared schema は `packages/shared` に置く。
+- runtime validation には Zod を使う。
+- frontend と backend は type を重複定義せず contract を共有する。
+- request body、query params、response、enum、source type、importance level など、app 境界をまたぐ shape は shared schema から定義する。
 
-## Current Repo State
+## 現在のリポジトリ状況
 
-- Shared app-boundary contracts currently live in `packages/shared/src/contracts.ts`.
-- The repo still contains some legacy trend-related contracts because the underlying code is retained on hold.
-- Importance is currently exposed as numeric fields in release and incident DTOs, not as a dedicated shared enum.
+- app 境界をまたぐ shared contract は現在 `packages/shared/src/contracts.ts` にある。
+- trend 関連コードを保留状態で残しているため、legacy な trend contract が一部 repo 内に残っている。
+- importance は専用の shared enum ではなく、release / incident DTO の数値 field として公開されている。
 
-## Workflow
+## ワークフロー
 
-1. Define or update the Zod schema in `packages/shared/src/contracts.ts`.
-2. Export the inferred TypeScript type from the same file.
-3. Update backend route/service usage to parse against the schema.
-4. Update frontend data access code to rely on the shared contract.
-5. Remove any duplicated local type if the contract now covers it.
+1. `packages/shared/src/contracts.ts` で Zod schema を定義・更新する。
+2. 同じファイルから推論された TypeScript type を export する。
+3. backend の route / service 側でその schema を使って parse するよう更新する。
+4. frontend の data access code も shared contract を前提に更新する。
+5. contract で置き換えられる重複 local type は削除する。
 
-## Design Guidance
+## 設計指針
 
-- Prefer small composable schemas over large ad hoc objects.
-- Keep naming stable and explicit.
-- Add enums for bounded values instead of freeform strings when product rules depend on them.
+- 大きな ad hoc object より、小さく組み合わせやすい schema を優先する。
+- 命名は安定的で明示的にする。
+- product rule が依存する値は freeform string ではなく enum 化する。
 
-## Avoid
+## 避けること
 
-- One-off response types only declared in `apps/web`
-- Backend-only request shapes for public routes when frontend consumes them
-- Silent schema drift between apps
+- `apps/web` にしかない一回限りの response type
+- frontend が利用する public route なのに backend 側だけで閉じた request shape
+- app 間で気づかないまま schema がずれていくこと
 
-## Load These References When Needed
+## 必要に応じて読む参照
 
-- Contract checklist: `references/contract-checklist.md`
+- contract 確認項目: `references/contract-checklist.md`

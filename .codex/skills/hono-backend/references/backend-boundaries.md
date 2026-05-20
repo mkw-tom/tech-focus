@@ -1,34 +1,34 @@
-# Backend Boundary Checklist
+# バックエンド責務境界チェック
 
 ## Routes
 
-- Request parsing
-- Shared schema validation
-- Service call
-- Response serialization
+- リクエストの解析
+- shared schema の検証
+- service の呼び出し
+- response の整形
 
 ## Services
 
-- Product rules
-- Orchestration across repositories and fetchers
-- Digest lookup or generation trigger decisions
-- Summary construction
+- product rule
+- repository / fetcher をまたぐ orchestration
+- digest の参照や生成トリガーの判断
+- summary の組み立て
 
 ## Repositories
 
-- Prisma queries
-- Upserts
-- Transaction handling
-- No product interpretation
+- Prisma query
+- upsert
+- transaction の制御
+- product 解釈は持たない
 
 ## Fetchers
 
-- HTTP requests
-- Source-specific response parsing
-- No DB writes
+- HTTP request
+- source 固有の response 解析
+- DB write はしない
 
 ## Jobs
 
-- Scheduled orchestration
-- Collection only
-- No user-facing wording generation
+- 定期実行 orchestration
+- collection のみ
+- ユーザー向け文言生成はしない

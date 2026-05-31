@@ -1,4 +1,5 @@
 import type { Incident, TrackableTechnology } from "../_data/dashboard"
+import { AiDigestPanel } from "./ai-digest-panel"
 
 type IncidentCardProps = {
   item: Incident
@@ -62,6 +63,8 @@ export function IncidentCard({ item, trackedTopics }: IncidentCardProps) {
             {item.rawContent || "Advisory の本文はありません。"}
           </p>
         </div>
+
+        <AiDigestPanel targetType="incident" targetId={item.id} tone="error" />
 
         <div className="card-actions justify-end">
           <a

@@ -1,5 +1,7 @@
 import { Hono } from "hono"
+import { cors } from "hono/cors"
 import { loadEnv } from "./lib/load-env.js"
+import { aiDigestRoutes } from "./routes/ai-digest-routes.js"
 import { dashboardRoutes } from "./routes/dashboard-routes.js"
 import { healthRoutes } from "./routes/health-routes.js"
 import { incidentRoutes } from "./routes/incident-routes.js"
@@ -12,6 +14,8 @@ const envName = loadEnv()
 export function createApp() {
   const app = new Hono()
 
+  app.use("*", cors())
+
   app.get("/", (c) =>
     c.json({
       name: "@tech-focus/api",
@@ -21,6 +25,7 @@ export function createApp() {
   )
 
   app.route("/health", healthRoutes)
+  app.route("/ai-digests", aiDigestRoutes)
   app.route("/dashboard", dashboardRoutes)
   app.route("/incidents", incidentRoutes)
   app.route("/stories", storyRoutes)

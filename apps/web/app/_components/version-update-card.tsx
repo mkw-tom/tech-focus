@@ -1,4 +1,5 @@
 import type { TrackableTechnology, VersionUpdate } from "../_data/dashboard"
+import { AiDigestPanel } from "./ai-digest-panel"
 
 type VersionUpdateCardProps = {
   item: VersionUpdate
@@ -65,6 +66,8 @@ export function VersionUpdateCard({
             {item.rawContent || "Release note の本文はありません。"}
           </p>
         </div>
+
+        <AiDigestPanel targetType="versionUpdate" targetId={item.id} />
 
         <div className="card-actions justify-end">
           <a

@@ -1,10 +1,13 @@
 import "server-only"
 
 import {
+  type AiDigestDetailResponse,
+  type AiDigestRouteParams,
   type DashboardDataDto,
   type IncidentDto,
   type StoryDto,
   type VersionUpdateDto,
+  aiDigestDetailResponseSchema,
   dashboardDataDtoSchema,
   incidentsResponseSchema,
   storiesResponseSchema,
@@ -163,6 +166,17 @@ export async function getIncidents(
     logApiFallback("/incidents", error)
     return []
   }
+}
+
+export async function getAiDigestDetail(
+  params: AiDigestRouteParams,
+): Promise<AiDigestDetailResponse> {
+  const response = await apiFetch(
+    `/ai-digests/${params.targetType}/${params.targetId}`,
+    aiDigestDetailResponseSchema,
+  )
+
+  return response
 }
 
 export async function getStoryById(storyId: string): Promise<StoryDto> {

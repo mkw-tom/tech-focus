@@ -20,6 +20,12 @@ export type PersistedVersionUpdate = {
 }
 
 export const versionRepository = {
+  async findById(id: string) {
+    return prisma.versionUpdate.findUnique({
+      where: { id },
+    })
+  },
+
   async list(params?: { limit?: number; topic?: string }) {
     const items = await prisma.versionUpdate.findMany({
       where: params?.topic ? { topic: params.topic } : undefined,

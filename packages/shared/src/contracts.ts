@@ -127,6 +127,28 @@ export const listFeedQuerySchema = z.object({
   topic: z.string().trim().min(1).optional(),
 })
 
+export const aiDigestTargetTypeSchema = z.enum(["versionUpdate", "incident"])
+export const aiDigestImportanceSchema = z.enum(["low", "medium", "high"])
+
+export const aiDigestRouteParamsSchema = z.object({
+  targetType: aiDigestTargetTypeSchema,
+  targetId: z.string().trim().min(1),
+})
+
+export const aiDigestGeneratedContentSchema = z.object({
+  title: z.string().trim().min(1),
+  summary: z.string().trim().min(1),
+  shortImpact: z.string().trim().min(1).nullable().optional(),
+  recommendedAction: z.string().trim().min(1).nullable().optional(),
+  importance: aiDigestImportanceSchema.nullable().optional(),
+  background: z.string().trim().min(1).nullable().optional(),
+  changedContent: z.string().trim().min(1).nullable().optional(),
+  detailedImpact: z.string().trim().min(1).nullable().optional(),
+  affectedAudience: z.string().trim().min(1).nullable().optional(),
+  investigationMemo: z.string().trim().min(1).nullable().optional(),
+  detailedReport: z.string().trim().min(1).nullable().optional(),
+})
+
 export const versionSyncRequestSchema = z.object({
   topic: z.string().trim().min(1).optional(),
 })
@@ -150,6 +172,33 @@ export const versionUpdatesResponseSchema = z.object({
 export const incidentsResponseSchema = z.object({
   items: z.array(incidentDtoSchema),
 })
+
+export const aiDigestSummaryResponseSchema = z.object({
+  id: z.string(),
+  targetType: aiDigestTargetTypeSchema,
+  targetId: z.string(),
+  title: z.string(),
+  summary: z.string(),
+  shortImpact: z.string().nullable(),
+  recommendedAction: z.string().nullable(),
+  importance: aiDigestImportanceSchema.nullable(),
+  generatedAt: isoDateTimeSchema,
+})
+
+export const aiDigestDetailResponseSchema =
+  aiDigestSummaryResponseSchema.extend({
+    sourceName: z.string().nullable(),
+    sourceUrl: z.string().url().nullable(),
+    sourcePublishedAt: isoDateTimeSchema.nullable(),
+    detailedReport: z.string().nullable(),
+    background: z.string().nullable(),
+    changedContent: z.string().nullable(),
+    detailedImpact: z.string().nullable(),
+    affectedAudience: z.string().nullable(),
+    investigationMemo: z.string().nullable(),
+  })
+
+export const aiDigestResponseSchema = aiDigestDetailResponseSchema
 
 export const trendItemsResponseSchema = z.object({
   items: z.array(trendItemDtoSchema),
@@ -221,6 +270,12 @@ export type IncidentDto = z.infer<typeof incidentDtoSchema>
 export type TrendItemDto = z.infer<typeof trendItemDtoSchema>
 export type DashboardDataDto = z.infer<typeof dashboardDataDtoSchema>
 export type ListFeedQuery = z.infer<typeof listFeedQuerySchema>
+export type AiDigestTargetType = z.infer<typeof aiDigestTargetTypeSchema>
+export type AiDigestImportance = z.infer<typeof aiDigestImportanceSchema>
+export type AiDigestRouteParams = z.infer<typeof aiDigestRouteParamsSchema>
+export type AiDigestGeneratedContent = z.infer<
+  typeof aiDigestGeneratedContentSchema
+>
 export type VersionSyncRequest = z.infer<typeof versionSyncRequestSchema>
 export type TechnologiesResponse = z.infer<typeof technologiesResponseSchema>
 export type StoriesResponse = z.infer<typeof storiesResponseSchema>
@@ -229,6 +284,13 @@ export type VersionUpdatesResponse = z.infer<
   typeof versionUpdatesResponseSchema
 >
 export type IncidentsResponse = z.infer<typeof incidentsResponseSchema>
+export type AiDigestSummaryResponse = z.infer<
+  typeof aiDigestSummaryResponseSchema
+>
+export type AiDigestDetailResponse = z.infer<
+  typeof aiDigestDetailResponseSchema
+>
+export type AiDigestResponse = z.infer<typeof aiDigestResponseSchema>
 export type TrendItemsResponse = z.infer<typeof trendItemsResponseSchema>
 export type TrendItemsQuery = z.infer<typeof trendItemsQuerySchema>
 export type TrendItemsByTechResponse = z.infer<

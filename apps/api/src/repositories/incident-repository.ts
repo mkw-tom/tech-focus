@@ -18,6 +18,12 @@ export type PersistedIncident = {
 }
 
 export const incidentRepository = {
+  async findById(id: string) {
+    return prisma.incident.findUnique({
+      where: { id },
+    })
+  },
+
   async list(params?: { limit?: number; topic?: string }) {
     return prisma.incident.findMany({
       where: params?.topic ? { topic: params.topic } : undefined,

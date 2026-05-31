@@ -171,6 +171,35 @@ model TrendItem {
   @@index([source, publishedAt])
 }
 
+model AiDigest {
+  id                String   @id @default(cuid())
+  targetType        String
+  targetId          String
+  title             String
+  summary           String
+  impact            String?
+  shortImpact       String?
+  recommendedAction String?
+  importance        String?
+  detailedReport    String?
+  background        String?
+  changedContent    String?
+  detailedImpact    String?
+  affectedAudience  String?
+  investigationMemo String?
+  promptVersion     String
+  modelName         String?
+  status            String   @default("COMPLETED")
+  errorMessage      String?
+  generatedAt       DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([targetType, targetId, promptVersion])
+  @@index([targetType, targetId])
+  @@index([status, updatedAt])
+}
+
 model Story {
   id            String               @id
   likesCount    Int                  @default(0)

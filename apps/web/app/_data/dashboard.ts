@@ -161,6 +161,14 @@ export const trackableTechnologies: TrackableTechnology[] = [
     selected: true,
   },
   {
+    id: "vue",
+    name: "Vue",
+    group: "フレームワーク",
+    category: "Frontend",
+    description: "Composition API、compiler、runtime 周辺の更新を追う",
+    selected: true,
+  },
+  {
     id: "tailwindcss",
     name: "Tailwind CSS",
     group: "ライブラリ",

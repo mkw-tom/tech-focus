@@ -7,6 +7,7 @@ const incidentTopicMatchers = [
   { topic: "typescript", technologyId: "typescript", pattern: "typescript" },
   { topic: "next.js", technologyId: "nextjs", pattern: "next" },
   { topic: "hono", technologyId: "hono", pattern: "hono" },
+  { topic: "vue", technologyId: "vue", pattern: "vue" },
   { topic: "node", technologyId: undefined, pattern: "node" },
 ] as const
 

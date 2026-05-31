@@ -41,6 +41,14 @@ export const versionTopicDefinitions: VersionTopicDefinition[] = [
     sourceUrl: "https://github.com/honojs/hono/releases",
   },
   {
+    topic: "vue",
+    technologyId: "vue",
+    owner: "vuejs",
+    repo: "core",
+    sourceName: "GitHub Releases",
+    sourceUrl: "https://github.com/vuejs/core/releases",
+  },
+  {
     topic: "node",
     owner: "nodejs",
     repo: "node",
